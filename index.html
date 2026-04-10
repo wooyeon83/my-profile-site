@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>개발자1 | Frontend Developer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3B82F6',
+            secondary: '#8B5CF6',
+            accent: '#10B981',
+          },
+          animation: {
+            'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(30px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { background-color: #0F172A; color: #F1F5F9; }
+    .glass { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(148, 163, 184, 0.1); }
+    .gradient-text { background: linear-gradient(135deg, #3B82F6, #8B5CF6, #10B981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2); }
+    .nav-link { position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: linear-gradient(to right, #3B82F6, #8B5CF6); transition: width 0.3s ease; }
+    .nav-link:hover::after { width: 100%; }
+    .section-hidden { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .section-visible { opacity: 1; transform: translateY(0); }
+    .mesh-bg { background: radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 50% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%); }
+    .cursor { display: inline-block; width: 2px; height: 1.2em; background: #8B5CF6; animation: blink 1s step-end infinite; vertical-align: text-bottom; margin-left: 2px; }
+    @keyframes blink { 50% { opacity: 0; } }
+  </style>
+</head>
+<body class="font-sans antialiased">
+
+  <!-- ===== HEADER / NAV ===== -->
+  <header id="header" class="fixed top-0 left-0 right-0 z-50 glass transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#hero" class="text-xl font-bold gradient-text">개발자1</a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="#about"    class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">About</a>
+        <a href="#skills"   class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Skills</a>
+        <a href="#projects" class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Projects</a>
+        <a href="#contact"  class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Contact</a>
+        <a href="#contact" class="px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-blue-500 via-violet-500 to-emerald-500 text-white hover:opacity-90 transition-opacity">
+          연락하기
+        </a>
+      </nav>
+
+      <!-- Mobile Hamburger -->
+      <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="메뉴 열기">
+        <span class="hamburger-line block w-6 h-0.5 bg-slate-300 transition-all duration-300"></span>
+        <span class="hamburger-line block w-6 h-0.5 bg-slate-300 transition-all duration-300"></span>
+        <span class="hamburger-line block w-6 h-0.5 bg-slate-300 transition-all duration-300"></span>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-6 flex flex-col gap-4">
+      <a href="#about"    class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">About</a>
+      <a href="#skills"   class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Skills</a>
+      <a href="#projects" class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Projects</a>
+      <a href="#contact"  class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Contact</a>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section id="hero" class="min-h-screen flex items-center mesh-bg px-6 pt-20 pb-10">
+    <div class="max-w-6xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
+
+      <!-- LEFT: 소개 텍스트 -->
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-xs font-semibold text-emerald-400 border border-emerald-500/30 mb-6">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          현재 채용 오픈 · Available for work
+        </div>
+
+        <p class="text-slate-400 text-sm tracking-widest uppercase mb-2">안녕하세요, 저는</p>
+        <h1 class="text-5xl md:text-6xl font-black mb-3 gradient-text leading-tight">개발자1</h1>
+
+        <div class="text-xl md:text-2xl font-semibold text-slate-200 mb-5 h-8">
+          <span id="typing-text"></span><span class="cursor"></span>
+        </div>
+
+        <p class="text-slate-400 leading-relaxed mb-8 max-w-md">
+          사용자 중심의 웹 경험을 만드는 것을 좋아하는 프론트엔드 개발자입니다.
+          깔끔한 코드와 아름다운 UI에 열정을 가지고 있습니다.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-wrap gap-3 mb-10">
+          <a href="#projects"
+             class="px-7 py-3 rounded-full font-semibold bg-gradient-to-r from-blue-500 via-violet-500 to-emerald-500 text-white hover:opacity-90 transition-opacity shadow-lg text-sm">
+            프로젝트 보기
+          </a>
+          <a href="#contact"
+             class="px-7 py-3 rounded-full font-semibold border border-slate-600 text-slate-300 hover:border-violet-500 hover:text-white transition-all text-sm">
+            연락하기
+          </a>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-3 gap-3">
+          <div class="p-3 rounded-xl glass text-center">
+            <div class="text-2xl font-black gradient-text">2+</div>
+            <div class="text-xs text-slate-500 mt-0.5">Years Exp.</div>
+          </div>
+          <div class="p-3 rounded-xl glass text-center">
+            <div class="text-2xl font-black gradient-text">15+</div>
+            <div class="text-xs text-slate-500 mt-0.5">Projects</div>
+          </div>
+          <div class="p-3 rounded-xl glass text-center">
+            <div class="text-2xl font-black gradient-text">5+</div>
+            <div class="text-xs text-slate-500 mt-0.5">Tech Stack</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: 아바타 + 스킬 프리뷰 -->
+      <div class="flex flex-col items-center gap-6">
+
+        <!-- Avatar -->
+        <div class="relative w-44 h-44">
+          <div class="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500 via-violet-500 to-emerald-500 p-0.5" style="animation: spin 6s linear infinite;">
+            <div class="w-full h-full rounded-full bg-slate-900"></div>
+          </div>
+          <div class="absolute inset-1 rounded-full overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 flex items-end justify-center shadow-2xl">
+            <svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" class="w-full">
+              <defs>
+                <linearGradient id="skinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#FDDBB4"/>
+                  <stop offset="100%" style="stop-color:#F0C390"/>
+                </linearGradient>
+                <linearGradient id="shirtGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#3B82F6"/>
+                  <stop offset="50%" style="stop-color:#8B5CF6"/>
+                  <stop offset="100%" style="stop-color:#10B981"/>
+                </linearGradient>
+                <linearGradient id="hairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#1E293B"/>
+                  <stop offset="100%" style="stop-color:#334155"/>
+                </linearGradient>
+              </defs>
+              <ellipse cx="60" cy="125" rx="42" ry="28" fill="url(#shirtGrad)"/>
+              <rect x="18" y="98" width="84" height="32" rx="8" fill="url(#shirtGrad)"/>
+              <rect x="51" y="80" width="18" height="22" rx="6" fill="url(#skinGrad)"/>
+              <ellipse cx="60" cy="62" rx="28" ry="30" fill="url(#skinGrad)"/>
+              <ellipse cx="60" cy="38" rx="29" ry="20" fill="url(#hairGrad)"/>
+              <rect x="31" y="34" width="10" height="28" rx="5" fill="url(#hairGrad)"/>
+              <rect x="79" y="34" width="10" height="28" rx="5" fill="url(#hairGrad)"/>
+              <ellipse cx="60" cy="34" rx="28" ry="12" fill="url(#hairGrad)"/>
+              <ellipse cx="48" cy="65" rx="4" ry="4.5" fill="#1E293B"/>
+              <ellipse cx="72" cy="65" rx="4" ry="4.5" fill="#1E293B"/>
+              <circle cx="49.5" cy="63.5" r="1.5" fill="white"/>
+              <circle cx="73.5" cy="63.5" r="1.5" fill="white"/>
+              <path d="M43 59 Q48 56 53 59" stroke="#334155" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M67 59 Q72 56 77 59" stroke="#334155" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M51 76 Q60 83 69 76" stroke="#C97B5A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M42 100 L60 110 L78 100" stroke="rgba(255,255,255,0.3)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="absolute bottom-2 right-2 w-4 h-4 rounded-full bg-emerald-400 border-2 border-slate-900 shadow-lg"></div>
+        </div>
+
+        <!-- Skill Preview Cards -->
+        <div class="w-full grid grid-cols-2 gap-3">
+          <div class="glass rounded-xl p-4">
+            <div class="text-xs text-blue-400 font-semibold tracking-widest mb-2">LANGUAGES</div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">HTML</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">CSS</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">JS</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">TS</span>
+            </div>
+          </div>
+          <div class="glass rounded-xl p-4">
+            <div class="text-xs text-violet-400 font-semibold tracking-widest mb-2">FRAMEWORK</div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">React</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">Next.js</span>
+            </div>
+          </div>
+          <div class="glass rounded-xl p-4">
+            <div class="text-xs text-emerald-400 font-semibold tracking-widest mb-2">TOOLS</div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">Git</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">Figma</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">Vercel</span>
+            </div>
+          </div>
+          <div class="glass rounded-xl p-4">
+            <div class="text-xs text-slate-400 font-semibold tracking-widest mb-2">GITHUB</div>
+            <a href="https://github.com/username" target="_blank" class="flex items-center gap-1.5 text-slate-300 hover:text-white transition-colors text-sm">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+              </svg>
+              @username
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about" class="py-24 px-6 section-hidden">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-black gradient-text mb-3">About Me</h2>
+        <p class="text-slate-500">저에 대해 소개합니다</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="flex flex-col items-center md:items-start">
+          <div class="relative w-48 h-48 mb-6">
+            <!-- Gradient border frame -->
+            <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500 via-violet-500 to-emerald-500 p-0.5">
+              <div class="w-full h-full rounded-2xl bg-slate-900 flex items-end justify-center overflow-hidden">
+                <svg viewBox="0 0 160 175" xmlns="http://www.w3.org/2000/svg" class="w-full">
+                  <defs>
+                    <linearGradient id="aboutSkin" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#FDDBB4"/>
+                      <stop offset="100%" style="stop-color:#F0C390"/>
+                    </linearGradient>
+                    <linearGradient id="aboutShirt" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#3B82F6"/>
+                      <stop offset="50%" style="stop-color:#8B5CF6"/>
+                      <stop offset="100%" style="stop-color:#10B981"/>
+                    </linearGradient>
+                    <linearGradient id="aboutHair" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#1E293B"/>
+                      <stop offset="100%" style="stop-color:#334155"/>
+                    </linearGradient>
+                    <linearGradient id="laptopGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#334155"/>
+                      <stop offset="100%" style="stop-color:#1E293B"/>
+                    </linearGradient>
+                  </defs>
+                  <!-- Body / shirt -->
+                  <ellipse cx="80" cy="170" rx="58" ry="35" fill="url(#aboutShirt)"/>
+                  <rect x="22" y="128" width="116" height="47" rx="10" fill="url(#aboutShirt)"/>
+                  <!-- Arms holding laptop -->
+                  <rect x="10" y="128" width="26" height="40" rx="10" fill="url(#aboutShirt)"/>
+                  <rect x="124" y="128" width="26" height="40" rx="10" fill="url(#aboutShirt)"/>
+                  <!-- Laptop base -->
+                  <rect x="22" y="148" width="116" height="8" rx="4" fill="#0F172A"/>
+                  <!-- Laptop screen -->
+                  <rect x="34" y="110" width="92" height="58" rx="6" fill="url(#laptopGrad)"/>
+                  <rect x="38" y="114" width="84" height="50" rx="4" fill="#0F172A"/>
+                  <!-- Code lines on screen -->
+                  <rect x="44" y="120" width="30" height="3" rx="1.5" fill="#3B82F6" opacity="0.9"/>
+                  <rect x="44" y="127" width="50" height="3" rx="1.5" fill="#8B5CF6" opacity="0.9"/>
+                  <rect x="44" y="134" width="20" height="3" rx="1.5" fill="#10B981" opacity="0.9"/>
+                  <rect x="44" y="141" width="40" height="3" rx="1.5" fill="#3B82F6" opacity="0.7"/>
+                  <rect x="44" y="148" width="35" height="3" rx="1.5" fill="#8B5CF6" opacity="0.7"/>
+                  <rect x="44" y="155" width="55" height="3" rx="1.5" fill="#10B981" opacity="0.7"/>
+                  <!-- Neck -->
+                  <rect x="68" y="98" width="24" height="30" rx="8" fill="url(#aboutSkin)"/>
+                  <!-- Head -->
+                  <ellipse cx="80" cy="78" rx="34" ry="36" fill="url(#aboutSkin)"/>
+                  <!-- Hair -->
+                  <ellipse cx="80" cy="47" rx="35" ry="24" fill="url(#aboutHair)"/>
+                  <rect x="45" y="42" width="13" height="34" rx="6" fill="url(#aboutHair)"/>
+                  <rect x="102" y="42" width="13" height="34" rx="6" fill="url(#aboutHair)"/>
+                  <ellipse cx="80" cy="42" rx="34" ry="14" fill="url(#aboutHair)"/>
+                  <!-- Eyes -->
+                  <ellipse cx="66" cy="82" rx="5" ry="5.5" fill="#1E293B"/>
+                  <ellipse cx="94" cy="82" rx="5" ry="5.5" fill="#1E293B"/>
+                  <circle cx="67.5" cy="80" r="2" fill="white"/>
+                  <circle cx="95.5" cy="80" r="2" fill="white"/>
+                  <!-- Eyebrows -->
+                  <path d="M59 74 Q66 70 73 74" stroke="#334155" stroke-width="3" fill="none" stroke-linecap="round"/>
+                  <path d="M87 74 Q94 70 101 74" stroke="#334155" stroke-width="3" fill="none" stroke-linecap="round"/>
+                  <!-- Smile -->
+                  <path d="M68 94 Q80 102 92 94" stroke="#C97B5A" stroke-width="3" fill="none" stroke-linecap="round"/>
+                  <!-- Collar -->
+                  <path d="M56 128 L80 142 L104 128" stroke="rgba(255,255,255,0.25)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            <!-- Corner badge -->
+            <div class="absolute -bottom-2 -right-2 w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center shadow-lg border-2 border-slate-900">
+              <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-400 border border-blue-500/30">Frontend</span>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-violet-500/20 text-violet-400 border border-violet-500/30">UI/UX</span>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Open Source</span>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-2xl font-bold text-white mb-4">프론트엔드 개발자</h3>
+          <div class="space-y-4 text-slate-400 leading-relaxed">
+            <p>
+              사용자가 실제로 마주하는 화면을 만드는 프론트엔드 개발에 매력을 느껴 이 길을 걷고 있습니다.
+              깔끔한 코드와 직관적인 인터페이스로 더 나은 경험을 전달하는 것이 저의 목표입니다.
+            </p>
+            <p>
+              React와 TypeScript를 중심으로 모던 웹 기술을 탐구하고 있으며, 오픈소스 기여와
+              지속적인 학습을 통해 성장하고 있습니다.
+            </p>
+          </div>
+
+          <div class="mt-8 grid grid-cols-3 gap-4 text-center">
+            <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+              <div class="text-3xl font-black gradient-text">2+</div>
+              <div class="text-xs text-slate-500 mt-1">Years Exp.</div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+              <div class="text-3xl font-black gradient-text">15+</div>
+              <div class="text-xs text-slate-500 mt-1">Projects</div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+              <div class="text-3xl font-black gradient-text">5+</div>
+              <div class="text-xs text-slate-500 mt-1">Tech Stack</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SKILLS ===== -->
+  <section id="skills" class="py-24 px-6 section-hidden" style="background: rgba(30,41,59,0.3)">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-black gradient-text mb-3">Skills</h2>
+        <p class="text-slate-500">사용하는 기술 스택</p>
+      </div>
+
+      <div class="space-y-10">
+        <!-- Languages -->
+        <div>
+          <h3 class="text-sm font-semibold text-blue-400 tracking-widest uppercase mb-4 flex items-center gap-2">
+            <span class="w-6 h-0.5 bg-blue-400"></span> Languages
+          </h3>
+          <div class="flex flex-wrap gap-3">
+            <span class="skill-badge bg-blue-500/15 text-blue-300 border-blue-500/30">HTML5</span>
+            <span class="skill-badge bg-blue-500/15 text-blue-300 border-blue-500/30">CSS3</span>
+            <span class="skill-badge bg-blue-500/15 text-blue-300 border-blue-500/30">JavaScript</span>
+            <span class="skill-badge bg-blue-500/15 text-blue-300 border-blue-500/30">TypeScript</span>
+          </div>
+        </div>
+
+        <!-- Frameworks -->
+        <div>
+          <h3 class="text-sm font-semibold text-violet-400 tracking-widest uppercase mb-4 flex items-center gap-2">
+            <span class="w-6 h-0.5 bg-violet-400"></span> Frameworks & Libraries
+          </h3>
+          <div class="flex flex-wrap gap-3">
+            <span class="skill-badge bg-violet-500/15 text-violet-300 border-violet-500/30">React</span>
+            <span class="skill-badge bg-violet-500/15 text-violet-300 border-violet-500/30">Next.js</span>
+            <span class="skill-badge bg-violet-500/15 text-violet-300 border-violet-500/30">Tailwind CSS</span>
+            <span class="skill-badge bg-violet-500/15 text-violet-300 border-violet-500/30">Zustand</span>
+          </div>
+        </div>
+
+        <!-- Tools -->
+        <div>
+          <h3 class="text-sm font-semibold text-emerald-400 tracking-widest uppercase mb-4 flex items-center gap-2">
+            <span class="w-6 h-0.5 bg-emerald-400"></span> Tools & Platforms
+          </h3>
+          <div class="flex flex-wrap gap-3">
+            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">Git</span>
+            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">GitHub</span>
+            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">Figma</span>
+            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">VS Code</span>
+            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">Vercel</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .skill-badge { padding: 0.4rem 1rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500; border: 1px solid; transition: transform 0.2s, box-shadow 0.2s; }
+    .skill-badge:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+  </style>
+
+  <!-- ===== PROJECTS ===== -->
+  <section id="projects" class="py-24 px-6 section-hidden">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-black gradient-text mb-3">Projects</h2>
+        <p class="text-slate-500">주요 프로젝트 포트폴리오</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+
+        <!-- Card 1 -->
+        <div class="glass rounded-2xl overflow-hidden card-hover">
+          <div class="h-2 bg-gradient-to-r from-blue-500 to-violet-500"></div>
+          <div class="p-6">
+            <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-2xl mb-4">🛒</div>
+            <h3 class="text-xl font-bold text-white mb-2">ShopEase</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+              React와 TypeScript로 구현한 풀스택 쇼핑몰 프로젝트.
+              상품 검색, 장바구니, 결제 기능을 포함합니다.
+            </p>
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">React</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">TypeScript</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">Tailwind</span>
+            </div>
+            <div class="flex gap-3">
+              <a href="#" class="flex-1 py-2 rounded-lg text-sm font-medium text-center border border-slate-600 text-slate-300 hover:border-blue-500 hover:text-blue-400 transition-colors">
+                GitHub
+              </a>
+              <a href="#" class="flex-1 py-2 rounded-lg text-sm font-medium text-center bg-gradient-to-r from-blue-500 to-violet-500 text-white hover:opacity-90 transition-opacity">
+                Live Demo
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="glass rounded-2xl overflow-hidden card-hover">
+          <div class="h-2 bg-gradient-to-r from-violet-500 to-emerald-500"></div>
+          <div class="p-6">
+            <div class="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center text-2xl mb-4">📝</div>
+            <h3 class="text-xl font-bold text-white mb-2">TaskFlow</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+              드래그앤드롭을 지원하는 칸반 보드 앱.
+              실시간 협업과 태스크 관리 기능을 제공합니다.
+            </p>
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">Next.js</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">Zustand</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">Vercel</span>
+            </div>
+            <div class="flex gap-3">
+              <a href="#" class="flex-1 py-2 rounded-lg text-sm font-medium text-center border border-slate-600 text-slate-300 hover:border-violet-500 hover:text-violet-400 transition-colors">
+                GitHub
+              </a>
+              <a href="#" class="flex-1 py-2 rounded-lg text-sm font-medium text-center bg-gradient-to-r from-violet-500 to-emerald-500 text-white hover:opacity-90 transition-opacity">
+                Live Demo
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="glass rounded-2xl overflow-hidden card-hover">
+          <div class="h-2 bg-gradient-to-r from-emerald-500 to-blue-500"></div>
+          <div class="p-6">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-2xl mb-4">🌤️</div>
+            <h3 class="text-xl font-bold text-white mb-2">WeatherNow</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+              OpenWeather API를 활용한 날씨 앱.
+              위치 기반 실시간 날씨 정보와 7일 예보를 제공합니다.
+            </p>
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">JavaScript</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">CSS3</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">REST API</span>
+            </div>
+            <div class="flex gap-3">
+              <a href="#" class="flex-1 py-2 rounded-lg text-sm font-medium text-center border border-slate-600 text-slate-300 hover:border-emerald-500 hover:text-emerald-400 transition-colors">
+                GitHub
+              </a>
+              <a href="#" class="flex-1 py-2 rounded-lg text-sm font-medium text-center bg-gradient-to-r from-emerald-500 to-blue-500 text-white hover:opacity-90 transition-opacity">
+                Live Demo
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact" class="py-24 px-6 section-hidden" style="background: rgba(30,41,59,0.3)">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-4xl font-black gradient-text mb-3">Contact</h2>
+      <p class="text-slate-500 mb-12">프로젝트 협업이나 채용 문의는 언제든지 환영합니다</p>
+
+      <div class="glass rounded-2xl p-10">
+        <p class="text-slate-300 text-lg mb-10 leading-relaxed">
+          새로운 기회나 흥미로운 프로젝트에 대해 이야기 나누고 싶으시면<br>
+          아래 방법으로 연락해 주세요.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-10">
+          <a href="mailto:hello@example.com"
+             class="flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 to-violet-500 text-white font-semibold hover:opacity-90 transition-opacity">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            이메일 보내기
+          </a>
+          <a href="https://github.com/username" target="_blank" rel="noopener noreferrer"
+             class="flex items-center justify-center gap-3 px-8 py-4 rounded-xl border border-slate-600 text-slate-300 font-semibold hover:border-violet-500 hover:text-white transition-all">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>
+            GitHub 프로필
+          </a>
+        </div>
+
+        <div class="flex justify-center gap-6 text-slate-500 text-sm">
+          <span class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            현재 채용 오픈
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="py-8 px-6 border-t border-slate-800 text-center text-slate-600 text-sm">
+    <p>© 2026 개발자1. Built with HTML, CSS & JavaScript + Tailwind CSS</p>
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // --- Typing animation ---
+    const roles = [
+      'Frontend Developer 💻',
+      'UI/UX Enthusiast 🎨',
+      'React Developer ⚛️',
+      'Open Source Contributor 🌱',
+    ];
+    let roleIndex = 0, charIndex = 0, isDeleting = false;
+    const typingEl = document.getElementById('typing-text');
+
+    function type() {
+      const current = roles[roleIndex];
+      if (isDeleting) {
+        typingEl.textContent = current.substring(0, charIndex - 1);
+        charIndex--;
+      } else {
+        typingEl.textContent = current.substring(0, charIndex + 1);
+        charIndex++;
+      }
+
+      let delay = isDeleting ? 60 : 100;
+      if (!isDeleting && charIndex === current.length) {
+        delay = 1800;
+        isDeleting = true;
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        roleIndex = (roleIndex + 1) % roles.length;
+        delay = 400;
+      }
+      setTimeout(type, delay);
+    }
+    type();
+
+    // --- Mobile menu ---
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    let menuOpen = false;
+
+    menuBtn.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('hidden', !menuOpen);
+      const lines = menuBtn.querySelectorAll('.hamburger-line');
+      if (menuOpen) {
+        lines[0].style.transform = 'translateY(8px) rotate(45deg)';
+        lines[1].style.opacity = '0';
+        lines[2].style.transform = 'translateY(-8px) rotate(-45deg)';
+      } else {
+        lines.forEach(l => { l.style.transform = ''; l.style.opacity = ''; });
+      }
+    });
+
+    function closeMobileMenu() {
+      menuOpen = false;
+      mobileMenu.classList.add('hidden');
+      const lines = menuBtn.querySelectorAll('.hamburger-line');
+      lines.forEach(l => { l.style.transform = ''; l.style.opacity = ''; });
+    }
+
+    // --- Scroll reveal (IntersectionObserver) ---
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('section-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.section-hidden').forEach(el => observer.observe(el));
+
+    // --- Smooth scroll for nav links ---
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', e => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
