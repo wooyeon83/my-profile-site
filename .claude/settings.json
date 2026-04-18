@@ -1,0 +1,10 @@
+{
+    "permissions": {
+        "allowed": [
+            "mcp__context7",
+            "mcp__awsdocs"
+        ],
+        "deny": [],
+        "ask": []
+    }
+}

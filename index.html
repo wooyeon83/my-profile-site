@@ -3,7 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>개발자1 | Frontend Developer</title>
+  <title>최우연 | 18년+ Data Engineer · Data Platform & AI/ML</title>
+  <meta name="description" content="데이터 파이프라인 구축부터 AI/ML 파이프라인까지 - 18년 5개월 경력의 데이터 엔지니어 최우연의 포트폴리오" />
+  <meta name="author" content="최우연 (Wooyeon Choi)" />
+  <meta name="keywords" content="Data Engineer, 데이터 엔지니어, AWS, Spark, Airflow, Databricks, PySpark, AI/ML, 최우연" />
+
+  <!-- Open Graph / Facebook / KakaoTalk -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="최우연 | 18년+ Data Engineer" />
+  <meta property="og:description" content="데이터 파이프라인 구축부터 분석 기반 인사이트 도출까지 - 비즈니스 성장의 자산으로 데이터를 전환하는 엔지니어" />
+  <meta property="og:locale" content="ko_KR" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="최우연 | 18년+ Data Engineer" />
+  <meta name="twitter:description" content="데이터 엔지니어링 · 데이터 플랫폼 · AI/ML 파이프라인 전문 엔지니어" />
+
+  <!-- Favicon (inline SVG - 그라디언트 W) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:%233B82F6'/><stop offset='50%25' style='stop-color:%238B5CF6'/><stop offset='100%25' style='stop-color:%2310B981'/></linearGradient></defs><rect width='64' height='64' rx='14' fill='%230F172A'/><text x='32' y='44' font-family='Arial,sans-serif' font-size='34' font-weight='900' text-anchor='middle' fill='url(%23g)'>W</text></svg>" />
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -42,6 +60,7 @@
     .mesh-bg { background: radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 50% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%); }
     .cursor { display: inline-block; width: 2px; height: 1.2em; background: #8B5CF6; animation: blink 1s step-end infinite; vertical-align: text-bottom; margin-left: 2px; }
     @keyframes blink { 50% { opacity: 0; } }
+    .timeline-dot { position: absolute; left: -6px; top: 8px; width: 12px; height: 12px; border-radius: 9999px; background: linear-gradient(135deg, #3B82F6, #8B5CF6); box-shadow: 0 0 0 4px rgba(59,130,246,0.15); }
   </style>
 </head>
 <body class="font-sans antialiased">
@@ -49,14 +68,15 @@
   <!-- ===== HEADER / NAV ===== -->
   <header id="header" class="fixed top-0 left-0 right-0 z-50 glass transition-all duration-300">
     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="#hero" class="text-xl font-bold gradient-text">개발자1</a>
+      <a href="#hero" class="text-xl font-bold gradient-text">최우연</a>
 
       <!-- Desktop Nav -->
       <nav class="hidden md:flex items-center gap-8">
-        <a href="#about"    class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">About</a>
-        <a href="#skills"   class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Skills</a>
-        <a href="#projects" class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Projects</a>
-        <a href="#contact"  class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Contact</a>
+        <a href="#about"      class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">About</a>
+        <a href="#skills"     class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Skills</a>
+        <a href="#experience" class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Experience</a>
+        <a href="#projects"   class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Projects</a>
+        <a href="#contact"    class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Contact</a>
         <a href="#contact" class="px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-blue-500 via-violet-500 to-emerald-500 text-white hover:opacity-90 transition-opacity">
           연락하기
         </a>
@@ -72,10 +92,11 @@
 
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden md:hidden px-6 pb-6 flex flex-col gap-4">
-      <a href="#about"    class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">About</a>
-      <a href="#skills"   class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Skills</a>
-      <a href="#projects" class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Projects</a>
-      <a href="#contact"  class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Contact</a>
+      <a href="#about"      class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">About</a>
+      <a href="#skills"     class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Skills</a>
+      <a href="#experience" class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Experience</a>
+      <a href="#projects"   class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Projects</a>
+      <a href="#contact"    class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Contact</a>
     </div>
   </header>
 
@@ -87,19 +108,19 @@
       <div>
         <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-xs font-semibold text-emerald-400 border border-emerald-500/30 mb-6">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          현재 채용 오픈 · Available for work
+          18년+ 경력 · Data Engineer
         </div>
 
         <p class="text-slate-400 text-sm tracking-widest uppercase mb-2">안녕하세요, 저는</p>
-        <h1 class="text-5xl md:text-6xl font-black mb-3 gradient-text leading-tight">개발자1</h1>
+        <h1 class="text-5xl md:text-6xl font-black mb-3 gradient-text leading-tight">최우연</h1>
 
         <div class="text-xl md:text-2xl font-semibold text-slate-200 mb-5 h-8">
           <span id="typing-text"></span><span class="cursor"></span>
         </div>
 
         <p class="text-slate-400 leading-relaxed mb-8 max-w-md">
-          사용자 중심의 웹 경험을 만드는 것을 좋아하는 프론트엔드 개발자입니다.
-          깔끔한 코드와 아름다운 UI에 열정을 가지고 있습니다.
+          데이터 파이프라인 구축부터 분석 기반 인사이트 도출까지 전 과정을 유기적으로 연결해 실행하는 엔지니어입니다.
+          기술을 넘어 비즈니스 성장의 자산으로 데이터를 전환합니다.
         </p>
 
         <!-- CTA Buttons -->
@@ -117,15 +138,15 @@
         <!-- Quick Stats -->
         <div class="grid grid-cols-3 gap-3">
           <div class="p-3 rounded-xl glass text-center">
-            <div class="text-2xl font-black gradient-text">2+</div>
+            <div class="text-2xl font-black gradient-text">18+</div>
             <div class="text-xs text-slate-500 mt-0.5">Years Exp.</div>
           </div>
           <div class="p-3 rounded-xl glass text-center">
-            <div class="text-2xl font-black gradient-text">15+</div>
+            <div class="text-2xl font-black gradient-text">20+</div>
             <div class="text-xs text-slate-500 mt-0.5">Projects</div>
           </div>
           <div class="p-3 rounded-xl glass text-center">
-            <div class="text-2xl font-black gradient-text">5+</div>
+            <div class="text-2xl font-black gradient-text">30+</div>
             <div class="text-xs text-slate-500 mt-0.5">Tech Stack</div>
           </div>
         </div>
@@ -134,47 +155,29 @@
       <!-- RIGHT: 아바타 + 스킬 프리뷰 -->
       <div class="flex flex-col items-center gap-6">
 
-        <!-- Avatar -->
-        <div class="relative w-44 h-44">
-          <div class="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500 via-violet-500 to-emerald-500 p-0.5" style="animation: spin 6s linear infinite;">
+        <!-- Avatar : 실제 프로필 사진 (wooyeon.png) -->
+        <div class="relative w-56 h-56">
+          <!-- 따뜻한 글로우 -->
+          <div class="absolute -inset-4 rounded-full bg-gradient-to-br from-blue-500/25 via-pink-400/20 to-amber-300/25 blur-3xl"></div>
+          <!-- 회전하는 그라디언트 테두리 -->
+          <div class="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400 via-violet-400 to-pink-300 p-[3px]" style="animation: spin 12s linear infinite;">
             <div class="w-full h-full rounded-full bg-slate-900"></div>
           </div>
-          <div class="absolute inset-1 rounded-full overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 flex items-end justify-center shadow-2xl">
-            <svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" class="w-full">
-              <defs>
-                <linearGradient id="skinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style="stop-color:#FDDBB4"/>
-                  <stop offset="100%" style="stop-color:#F0C390"/>
-                </linearGradient>
-                <linearGradient id="shirtGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style="stop-color:#3B82F6"/>
-                  <stop offset="50%" style="stop-color:#8B5CF6"/>
-                  <stop offset="100%" style="stop-color:#10B981"/>
-                </linearGradient>
-                <linearGradient id="hairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style="stop-color:#1E293B"/>
-                  <stop offset="100%" style="stop-color:#334155"/>
-                </linearGradient>
-              </defs>
-              <ellipse cx="60" cy="125" rx="42" ry="28" fill="url(#shirtGrad)"/>
-              <rect x="18" y="98" width="84" height="32" rx="8" fill="url(#shirtGrad)"/>
-              <rect x="51" y="80" width="18" height="22" rx="6" fill="url(#skinGrad)"/>
-              <ellipse cx="60" cy="62" rx="28" ry="30" fill="url(#skinGrad)"/>
-              <ellipse cx="60" cy="38" rx="29" ry="20" fill="url(#hairGrad)"/>
-              <rect x="31" y="34" width="10" height="28" rx="5" fill="url(#hairGrad)"/>
-              <rect x="79" y="34" width="10" height="28" rx="5" fill="url(#hairGrad)"/>
-              <ellipse cx="60" cy="34" rx="28" ry="12" fill="url(#hairGrad)"/>
-              <ellipse cx="48" cy="65" rx="4" ry="4.5" fill="#1E293B"/>
-              <ellipse cx="72" cy="65" rx="4" ry="4.5" fill="#1E293B"/>
-              <circle cx="49.5" cy="63.5" r="1.5" fill="white"/>
-              <circle cx="73.5" cy="63.5" r="1.5" fill="white"/>
-              <path d="M43 59 Q48 56 53 59" stroke="#334155" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-              <path d="M67 59 Q72 56 77 59" stroke="#334155" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-              <path d="M51 76 Q60 83 69 76" stroke="#C97B5A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-              <path d="M42 100 L60 110 L78 100" stroke="rgba(255,255,255,0.3)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+          <!-- 실제 프로필 사진 -->
+          <div class="absolute inset-[6px] rounded-full overflow-hidden shadow-2xl ring-1 ring-white/15">
+            <img src="wooyeon.png" alt="최우연 - 데이터 엔지니어"
+                 class="w-full h-full object-cover"
+                 style="filter: brightness(1.03) contrast(1.03) saturate(1.06);" />
           </div>
-          <div class="absolute bottom-2 right-2 w-4 h-4 rounded-full bg-emerald-400 border-2 border-slate-900 shadow-lg"></div>
+          <!-- Hi! 인사 말풍선 (친근함 강조) -->
+          <div class="absolute -top-1 -left-2 glass rounded-full px-3 py-1 shadow-lg border border-white/10 flex items-center gap-1.5 rotate-[-6deg]">
+            <span class="text-base">👋</span>
+            <span class="text-xs font-semibold text-slate-200">Hi!</span>
+          </div>
+          <!-- 온라인 상태 뱃지 -->
+          <div class="absolute bottom-3 right-3 w-5 h-5 rounded-full bg-emerald-400 border-2 border-slate-900 shadow-lg">
+            <div class="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-60"></div>
+          </div>
         </div>
 
         <!-- Skill Preview Cards -->
@@ -182,34 +185,35 @@
           <div class="glass rounded-xl p-4">
             <div class="text-xs text-blue-400 font-semibold tracking-widest mb-2">LANGUAGES</div>
             <div class="flex flex-wrap gap-1.5">
-              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">HTML</span>
-              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">CSS</span>
-              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">JS</span>
-              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">TS</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">Java</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">Python</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">Kotlin</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">SQL</span>
             </div>
           </div>
           <div class="glass rounded-xl p-4">
-            <div class="text-xs text-violet-400 font-semibold tracking-widest mb-2">FRAMEWORK</div>
+            <div class="text-xs text-violet-400 font-semibold tracking-widest mb-2">DATA STACK</div>
             <div class="flex flex-wrap gap-1.5">
-              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">React</span>
-              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">Next.js</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">Spark</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">Airflow</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">Hadoop</span>
             </div>
           </div>
           <div class="glass rounded-xl p-4">
-            <div class="text-xs text-emerald-400 font-semibold tracking-widest mb-2">TOOLS</div>
+            <div class="text-xs text-emerald-400 font-semibold tracking-widest mb-2">CLOUD</div>
             <div class="flex flex-wrap gap-1.5">
-              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">Git</span>
-              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">Figma</span>
-              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">Vercel</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">AWS</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">GCP</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">Databricks</span>
             </div>
           </div>
           <div class="glass rounded-xl p-4">
-            <div class="text-xs text-slate-400 font-semibold tracking-widest mb-2">GITHUB</div>
-            <a href="https://github.com/username" target="_blank" class="flex items-center gap-1.5 text-slate-300 hover:text-white transition-colors text-sm">
+            <div class="text-xs text-slate-400 font-semibold tracking-widest mb-2">LINKEDIN</div>
+            <a href="https://www.linkedin.com/in/wooyeon-choi-2514a827a/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-slate-300 hover:text-white transition-colors text-sm">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
               </svg>
-              @username
+              wooyeon-choi
             </a>
           </div>
         </div>
@@ -228,110 +232,220 @@
 
       <div class="grid md:grid-cols-2 gap-12 items-center">
         <div class="flex flex-col items-center md:items-start">
-          <div class="relative w-48 h-48 mb-6">
-            <!-- Gradient border frame -->
-            <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500 via-violet-500 to-emerald-500 p-0.5">
-              <div class="w-full h-full rounded-2xl bg-slate-900 flex items-end justify-center overflow-hidden">
-                <svg viewBox="0 0 160 175" xmlns="http://www.w3.org/2000/svg" class="w-full">
+          <div class="relative w-64 h-80 mb-6">
+            <!-- 따뜻한 글로우 -->
+            <div class="absolute -inset-4 rounded-3xl bg-gradient-to-br from-blue-500/20 via-pink-400/15 to-amber-300/20 blur-2xl"></div>
+            <!-- 장식 도트 패턴 (우측 상단) -->
+            <div class="absolute -top-3 -right-3 w-20 h-20 opacity-40">
+              <div class="grid grid-cols-5 gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-pink-400"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-pink-400"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-violet-400"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-violet-400"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-pink-400"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-violet-400"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-violet-400"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-violet-400"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              </div>
+            </div>
+            <!-- 그라디언트 테두리 프레임 -->
+            <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500 via-violet-500 to-pink-400 p-[3px] shadow-2xl">
+              <div class="w-full h-full rounded-3xl overflow-hidden bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900 ring-1 ring-white/10 flex items-end justify-center">
+                <!-- 커리어우먼 + 친근감 SVG (노트북과 함께) -->
+                <svg viewBox="0 0 220 270" xmlns="http://www.w3.org/2000/svg" class="w-full">
                   <defs>
-                    <linearGradient id="aboutSkin" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style="stop-color:#FDDBB4"/>
-                      <stop offset="100%" style="stop-color:#F0C390"/>
+                    <linearGradient id="skinA" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#FCE0C5"/>
+                      <stop offset="100%" style="stop-color:#F0C094"/>
                     </linearGradient>
-                    <linearGradient id="aboutShirt" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style="stop-color:#3B82F6"/>
-                      <stop offset="50%" style="stop-color:#8B5CF6"/>
-                      <stop offset="100%" style="stop-color:#10B981"/>
+                    <linearGradient id="hairA" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#3D2817"/>
+                      <stop offset="60%" style="stop-color:#5C3524"/>
+                      <stop offset="100%" style="stop-color:#6B3E28"/>
                     </linearGradient>
-                    <linearGradient id="aboutHair" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient id="jacketA" x1="0%" y1="0%" x2="100%" y2="100%">
                       <stop offset="0%" style="stop-color:#1E293B"/>
-                      <stop offset="100%" style="stop-color:#334155"/>
+                      <stop offset="100%" style="stop-color:#0F172A"/>
                     </linearGradient>
-                    <linearGradient id="laptopGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient id="scarfA" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#E8EEF7"/>
+                      <stop offset="100%" style="stop-color:#C7D5E8"/>
+                    </linearGradient>
+                    <linearGradient id="laptopA" x1="0%" y1="0%" x2="100%" y2="100%">
                       <stop offset="0%" style="stop-color:#334155"/>
                       <stop offset="100%" style="stop-color:#1E293B"/>
                     </linearGradient>
+                    <linearGradient id="screenA" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#0F172A"/>
+                      <stop offset="100%" style="stop-color:#1E293B"/>
+                    </linearGradient>
+                    <radialGradient id="lightA" cx="30%" cy="25%" r="60%">
+                      <stop offset="0%" style="stop-color:rgba(255,220,180,0.5)"/>
+                      <stop offset="100%" style="stop-color:rgba(255,220,180,0)"/>
+                    </radialGradient>
                   </defs>
-                  <!-- Body / shirt -->
-                  <ellipse cx="80" cy="170" rx="58" ry="35" fill="url(#aboutShirt)"/>
-                  <rect x="22" y="128" width="116" height="47" rx="10" fill="url(#aboutShirt)"/>
-                  <!-- Arms holding laptop -->
-                  <rect x="10" y="128" width="26" height="40" rx="10" fill="url(#aboutShirt)"/>
-                  <rect x="124" y="128" width="26" height="40" rx="10" fill="url(#aboutShirt)"/>
-                  <!-- Laptop base -->
-                  <rect x="22" y="148" width="116" height="8" rx="4" fill="#0F172A"/>
-                  <!-- Laptop screen -->
-                  <rect x="34" y="110" width="92" height="58" rx="6" fill="url(#laptopGrad)"/>
-                  <rect x="38" y="114" width="84" height="50" rx="4" fill="#0F172A"/>
-                  <!-- Code lines on screen -->
-                  <rect x="44" y="120" width="30" height="3" rx="1.5" fill="#3B82F6" opacity="0.9"/>
-                  <rect x="44" y="127" width="50" height="3" rx="1.5" fill="#8B5CF6" opacity="0.9"/>
-                  <rect x="44" y="134" width="20" height="3" rx="1.5" fill="#10B981" opacity="0.9"/>
-                  <rect x="44" y="141" width="40" height="3" rx="1.5" fill="#3B82F6" opacity="0.7"/>
-                  <rect x="44" y="148" width="35" height="3" rx="1.5" fill="#8B5CF6" opacity="0.7"/>
-                  <rect x="44" y="155" width="55" height="3" rx="1.5" fill="#10B981" opacity="0.7"/>
-                  <!-- Neck -->
-                  <rect x="68" y="98" width="24" height="30" rx="8" fill="url(#aboutSkin)"/>
-                  <!-- Head -->
-                  <ellipse cx="80" cy="78" rx="34" ry="36" fill="url(#aboutSkin)"/>
-                  <!-- Hair -->
-                  <ellipse cx="80" cy="47" rx="35" ry="24" fill="url(#aboutHair)"/>
-                  <rect x="45" y="42" width="13" height="34" rx="6" fill="url(#aboutHair)"/>
-                  <rect x="102" y="42" width="13" height="34" rx="6" fill="url(#aboutHair)"/>
-                  <ellipse cx="80" cy="42" rx="34" ry="14" fill="url(#aboutHair)"/>
-                  <!-- Eyes -->
-                  <ellipse cx="66" cy="82" rx="5" ry="5.5" fill="#1E293B"/>
-                  <ellipse cx="94" cy="82" rx="5" ry="5.5" fill="#1E293B"/>
-                  <circle cx="67.5" cy="80" r="2" fill="white"/>
-                  <circle cx="95.5" cy="80" r="2" fill="white"/>
-                  <!-- Eyebrows -->
-                  <path d="M59 74 Q66 70 73 74" stroke="#334155" stroke-width="3" fill="none" stroke-linecap="round"/>
-                  <path d="M87 74 Q94 70 101 74" stroke="#334155" stroke-width="3" fill="none" stroke-linecap="round"/>
-                  <!-- Smile -->
-                  <path d="M68 94 Q80 102 92 94" stroke="#C97B5A" stroke-width="3" fill="none" stroke-linecap="round"/>
-                  <!-- Collar -->
-                  <path d="M56 128 L80 142 L104 128" stroke="rgba(255,255,255,0.25)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+                  <!-- 뒷머리 웨이브 (어깨 아래까지) -->
+                  <path d="M 55 85 Q 35 150 42 235 Q 55 255 72 252 Q 62 180 68 110 Z" fill="url(#hairA)"/>
+                  <path d="M 165 85 Q 185 150 178 235 Q 165 255 148 252 Q 158 180 152 110 Z" fill="url(#hairA)"/>
+
+                  <!-- 팔 (노트북 양쪽으로) -->
+                  <rect x="28" y="195" width="35" height="55" rx="14" fill="url(#jacketA)"/>
+                  <rect x="157" y="195" width="35" height="55" rx="14" fill="url(#jacketA)"/>
+                  <!-- 손 -->
+                  <ellipse cx="50" cy="248" rx="10" ry="8" fill="url(#skinA)"/>
+                  <ellipse cx="170" cy="248" rx="10" ry="8" fill="url(#skinA)"/>
+
+                  <!-- 노트북 베이스 -->
+                  <rect x="35" y="235" width="150" height="10" rx="3" fill="#0F172A"/>
+                  <!-- 노트북 화면 -->
+                  <rect x="45" y="180" width="130" height="60" rx="4" fill="url(#laptopA)"/>
+                  <rect x="50" y="184" width="120" height="52" rx="2" fill="url(#screenA)"/>
+                  <!-- 화면 코드 라인 (데이터 느낌) -->
+                  <rect x="56" y="190" width="40" height="2.5" rx="1" fill="#3B82F6" opacity="0.9"/>
+                  <rect x="56" y="196" width="70" height="2.5" rx="1" fill="#8B5CF6" opacity="0.9"/>
+                  <rect x="56" y="202" width="28" height="2.5" rx="1" fill="#EC4899" opacity="0.85"/>
+                  <rect x="56" y="208" width="55" height="2.5" rx="1" fill="#10B981" opacity="0.85"/>
+                  <rect x="56" y="214" width="48" height="2.5" rx="1" fill="#3B82F6" opacity="0.7"/>
+                  <rect x="56" y="220" width="35" height="2.5" rx="1" fill="#F59E0B" opacity="0.75"/>
+                  <rect x="56" y="226" width="60" height="2.5" rx="1" fill="#8B5CF6" opacity="0.7"/>
+                  <!-- 화면 차트 미니 아이콘 -->
+                  <rect x="140" y="214" width="4" height="14" fill="#3B82F6" opacity="0.7"/>
+                  <rect x="146" y="208" width="4" height="20" fill="#8B5CF6" opacity="0.7"/>
+                  <rect x="152" y="218" width="4" height="10" fill="#EC4899" opacity="0.7"/>
+                  <rect x="158" y="204" width="4" height="24" fill="#10B981" opacity="0.7"/>
+
+                  <!-- 재킷 상체 -->
+                  <path d="M 40 250 Q 40 200 70 188 L 150 188 Q 180 200 180 250 Z" fill="url(#jacketA)"/>
+                  <!-- 재킷 V 깃 + 스카프 -->
+                  <path d="M 92 188 L 110 215 L 128 188 Z" fill="url(#scarfA)"/>
+                  <!-- 스카프 패턴 도트 -->
+                  <circle cx="104" cy="195" r="2" fill="#3B82F6" opacity="0.8"/>
+                  <circle cx="110" cy="200" r="1.8" fill="#8B5CF6" opacity="0.8"/>
+                  <circle cx="116" cy="195" r="2" fill="#3B82F6" opacity="0.8"/>
+                  <circle cx="107" cy="205" r="1.5" fill="#64748B" opacity="0.8"/>
+                  <circle cx="113" cy="205" r="1.5" fill="#64748B" opacity="0.8"/>
+                  <!-- 재킷 그라디언트 포인트 -->
+                  <path d="M 92 188 L 110 215" stroke="#3B82F6" stroke-width="1.2" fill="none" opacity="0.6"/>
+                  <path d="M 128 188 L 110 215" stroke="#8B5CF6" stroke-width="1.2" fill="none" opacity="0.6"/>
+
+                  <!-- 목 -->
+                  <rect x="95" y="155" width="30" height="35" rx="11" fill="url(#skinA)"/>
+
+                  <!-- 얼굴 -->
+                  <ellipse cx="110" cy="115" rx="48" ry="54" fill="url(#skinA)"/>
+                  <ellipse cx="110" cy="115" rx="48" ry="54" fill="url(#lightA)"/>
+
+                  <!-- 뱅 (앞머리) -->
+                  <path d="M 65 80 Q 70 58 90 54 Q 110 50 130 54 Q 150 58 155 80
+                           Q 150 92 135 88 Q 126 84 118 92 Q 110 86 102 92 Q 94 84 85 88 Q 70 92 65 80 Z"
+                        fill="url(#hairA)"/>
+
+                  <!-- 정수리 볼륨 -->
+                  <path d="M 68 80 Q 60 50 88 42 Q 110 35 132 42 Q 160 50 152 80
+                           Q 148 68 140 62 Q 125 56 110 56 Q 95 56 80 62 Q 72 68 68 80 Z"
+                        fill="url(#hairA)"/>
+
+                  <!-- 좌측 웨이브 머리 -->
+                  <path d="M 62 80 Q 42 120 48 180 Q 50 200 58 215 Q 62 185 58 150 Q 62 110 65 85 Z"
+                        fill="url(#hairA)"/>
+                  <!-- 우측 웨이브 머리 -->
+                  <path d="M 158 80 Q 178 120 172 180 Q 170 200 162 215 Q 158 185 162 150 Q 158 110 155 85 Z"
+                        fill="url(#hairA)"/>
+
+                  <!-- 머리 하이라이트 -->
+                  <path d="M 52 120 Q 50 155 55 190" stroke="#8B5A3C" stroke-width="1.2" fill="none" opacity="0.5" stroke-linecap="round"/>
+                  <path d="M 168 120 Q 170 155 165 190" stroke="#8B5A3C" stroke-width="1.2" fill="none" opacity="0.5" stroke-linecap="round"/>
+
+                  <!-- 눈썹 -->
+                  <path d="M 80 98 Q 90 94 100 98" stroke="#3D2817" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+                  <path d="M 120 98 Q 130 94 140 98" stroke="#3D2817" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+
+                  <!-- 둥근 안경 (골드톤) -->
+                  <circle cx="90" cy="115" r="16" fill="none" stroke="#C9A96E" stroke-width="2"/>
+                  <circle cx="130" cy="115" r="16" fill="none" stroke="#C9A96E" stroke-width="2"/>
+                  <path d="M 106 115 Q 110 113 114 115" stroke="#C9A96E" stroke-width="2" fill="none"/>
+                  <line x1="74" y1="115" x2="66" y2="117" stroke="#C9A96E" stroke-width="2" stroke-linecap="round"/>
+                  <line x1="146" y1="115" x2="154" y2="117" stroke="#C9A96E" stroke-width="2" stroke-linecap="round"/>
+                  <!-- 렌즈 빛반사 -->
+                  <path d="M 78 108 Q 83 103 92 105" stroke="rgba(255,255,255,0.55)" stroke-width="1.4" fill="none"/>
+                  <path d="M 118 108 Q 123 103 132 105" stroke="rgba(255,255,255,0.55)" stroke-width="1.4" fill="none"/>
+
+                  <!-- 눈 -->
+                  <ellipse cx="90" cy="116" rx="4" ry="4.5" fill="#2A1810"/>
+                  <ellipse cx="130" cy="116" rx="4" ry="4.5" fill="#2A1810"/>
+                  <circle cx="91.8" cy="114.5" r="1.5" fill="white"/>
+                  <circle cx="131.8" cy="114.5" r="1.5" fill="white"/>
+
+                  <!-- 코 -->
+                  <path d="M 110 124 Q 108 138 110 142 Q 112 138 110 124" fill="#E8B890" opacity="0.5"/>
+                  <ellipse cx="110" cy="143" rx="2.5" ry="1.2" fill="#D6A27A" opacity="0.5"/>
+
+                  <!-- 친근한 미소 -->
+                  <path d="M 97 155 Q 110 165 123 155" stroke="#B85C42" stroke-width="2.3" fill="none" stroke-linecap="round"/>
+                  <path d="M 99 155 Q 110 160 121 155" stroke="#D97A5E" stroke-width="1.4" fill="none" stroke-linecap="round" opacity="0.75"/>
+
+                  <!-- 볼 홍조 -->
+                  <ellipse cx="76" cy="135" rx="7" ry="5" fill="#F5B8A8" opacity="0.5"/>
+                  <ellipse cx="144" cy="135" rx="7" ry="5" fill="#F5B8A8" opacity="0.5"/>
                 </svg>
+                <!-- 하단 그라디언트 오버레이 -->
+                <div class="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-slate-900/50 to-transparent"></div>
               </div>
             </div>
-            <!-- Corner badge -->
-            <div class="absolute -bottom-2 -right-2 w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center shadow-lg border-2 border-slate-900">
-              <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
+            <!-- 장식 라인 (좌측 하단) -->
+            <div class="absolute -bottom-3 -left-3 w-16 h-16 border-l-2 border-b-2 border-pink-400/50 rounded-bl-3xl"></div>
+            <!-- 코너 뱃지 (데이터 큐브) -->
+            <div class="absolute -bottom-3 -right-3 w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center shadow-xl border-2 border-slate-900">
+              <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.8L19 8.2v.6L12 12 5 8.8v-.6L12 4.8zM4 10.2l7 3.5v7.1l-7-3.5v-7.1zm9 10.6v-7.1l7-3.5v7.1l-7 3.5z"/>
               </svg>
             </div>
+            <!-- 우측 상단 코딩 태그 (친근한 포인트) -->
+            <div class="absolute -top-2 -left-2 glass rounded-full px-3 py-1 shadow-lg border border-white/10 rotate-[-6deg]">
+              <span class="text-xs font-mono text-pink-300">&lt;data/&gt;</span>
+            </div>
           </div>
-          <div class="flex gap-4">
-            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-400 border border-blue-500/30">Frontend</span>
-            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-violet-500/20 text-violet-400 border border-violet-500/30">UI/UX</span>
-            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Open Source</span>
+          <div class="flex flex-wrap gap-2 justify-center md:justify-start">
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-400 border border-blue-500/30">Data Engineer</span>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-violet-500/20 text-violet-400 border border-violet-500/30">Data Platform</span>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-pink-500/20 text-pink-400 border border-pink-500/30">AI/ML</span>
           </div>
         </div>
 
         <div>
-          <h3 class="text-2xl font-bold text-white mb-4">프론트엔드 개발자</h3>
+          <h3 class="text-2xl font-bold text-white mb-4">데이터 엔지니어</h3>
           <div class="space-y-4 text-slate-400 leading-relaxed">
             <p>
-              사용자가 실제로 마주하는 화면을 만드는 프론트엔드 개발에 매력을 느껴 이 길을 걷고 있습니다.
-              깔끔한 코드와 직관적인 인터페이스로 더 나은 경험을 전달하는 것이 저의 목표입니다.
+              데이터 엔지니어링을 중심으로, 데이터 파이프라인 구축부터 분석 기반 인사이트 도출까지
+              전 과정을 유기적으로 연결해 실행해온 엔지니어입니다. 기술 구현에 그치지 않고
+              비즈니스 목표를 이해하며, 이를 기술적·분석적으로 해석해 조직이 활용 가능한 형태로 제공합니다.
             </p>
             <p>
-              React와 TypeScript를 중심으로 모던 웹 기술을 탐구하고 있으며, 오픈소스 기여와
-              지속적인 학습을 통해 성장하고 있습니다.
+              개발과 운영을 모두 경험하며 데이터 품질 안정성, 구조적 설계, 효율적인 파이프라인 운영의
+              중요성을 깊이 이해하고 있으며, 이를 기반으로 조직의 데이터 활용 성숙도를 높이는 데
+              집중해왔습니다. 데이터를 단순한 기록이 아닌 비즈니스 성장의 자산으로 전환하는 엔지니어가 되고자 합니다.
             </p>
           </div>
 
           <div class="mt-8 grid grid-cols-3 gap-4 text-center">
             <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
-              <div class="text-3xl font-black gradient-text">2+</div>
+              <div class="text-3xl font-black gradient-text">18+</div>
               <div class="text-xs text-slate-500 mt-1">Years Exp.</div>
             </div>
             <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
-              <div class="text-3xl font-black gradient-text">15+</div>
+              <div class="text-3xl font-black gradient-text">20+</div>
               <div class="text-xs text-slate-500 mt-1">Projects</div>
             </div>
             <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
-              <div class="text-3xl font-black gradient-text">5+</div>
+              <div class="text-3xl font-black gradient-text">30+</div>
               <div class="text-xs text-slate-500 mt-1">Tech Stack</div>
             </div>
           </div>
@@ -355,37 +469,80 @@
             <span class="w-6 h-0.5 bg-blue-400"></span> Languages
           </h3>
           <div class="flex flex-wrap gap-3">
-            <span class="skill-badge bg-blue-500/15 text-blue-300 border-blue-500/30">HTML5</span>
-            <span class="skill-badge bg-blue-500/15 text-blue-300 border-blue-500/30">CSS3</span>
-            <span class="skill-badge bg-blue-500/15 text-blue-300 border-blue-500/30">JavaScript</span>
-            <span class="skill-badge bg-blue-500/15 text-blue-300 border-blue-500/30">TypeScript</span>
+            <span class="skill-badge bg-blue-500/15 text-blue-300 border-blue-500/30">Java</span>
+            <span class="skill-badge bg-blue-500/15 text-blue-300 border-blue-500/30">Python</span>
+            <span class="skill-badge bg-blue-500/15 text-blue-300 border-blue-500/30">Kotlin</span>
+            <span class="skill-badge bg-blue-500/15 text-blue-300 border-blue-500/30">SQL</span>
+            <span class="skill-badge bg-blue-500/15 text-blue-300 border-blue-500/30">C / C++</span>
+            <span class="skill-badge bg-blue-500/15 text-blue-300 border-blue-500/30">R</span>
           </div>
         </div>
 
-        <!-- Frameworks -->
+        <!-- Data & Big Data -->
         <div>
           <h3 class="text-sm font-semibold text-violet-400 tracking-widest uppercase mb-4 flex items-center gap-2">
-            <span class="w-6 h-0.5 bg-violet-400"></span> Frameworks & Libraries
+            <span class="w-6 h-0.5 bg-violet-400"></span> Data & Big Data
           </h3>
           <div class="flex flex-wrap gap-3">
-            <span class="skill-badge bg-violet-500/15 text-violet-300 border-violet-500/30">React</span>
-            <span class="skill-badge bg-violet-500/15 text-violet-300 border-violet-500/30">Next.js</span>
-            <span class="skill-badge bg-violet-500/15 text-violet-300 border-violet-500/30">Tailwind CSS</span>
-            <span class="skill-badge bg-violet-500/15 text-violet-300 border-violet-500/30">Zustand</span>
+            <span class="skill-badge bg-violet-500/15 text-violet-300 border-violet-500/30">Apache Spark</span>
+            <span class="skill-badge bg-violet-500/15 text-violet-300 border-violet-500/30">PySpark</span>
+            <span class="skill-badge bg-violet-500/15 text-violet-300 border-violet-500/30">Apache Airflow</span>
+            <span class="skill-badge bg-violet-500/15 text-violet-300 border-violet-500/30">Hadoop</span>
+            <span class="skill-badge bg-violet-500/15 text-violet-300 border-violet-500/30">Apache Flume</span>
+            <span class="skill-badge bg-violet-500/15 text-violet-300 border-violet-500/30">Spark Streaming</span>
+            <span class="skill-badge bg-violet-500/15 text-violet-300 border-violet-500/30">Kafka / Logstash</span>
+            <span class="skill-badge bg-violet-500/15 text-violet-300 border-violet-500/30">Spring Batch</span>
           </div>
         </div>
 
-        <!-- Tools -->
+        <!-- Cloud & Infra -->
         <div>
           <h3 class="text-sm font-semibold text-emerald-400 tracking-widest uppercase mb-4 flex items-center gap-2">
-            <span class="w-6 h-0.5 bg-emerald-400"></span> Tools & Platforms
+            <span class="w-6 h-0.5 bg-emerald-400"></span> Cloud & Infra
           </h3>
           <div class="flex flex-wrap gap-3">
-            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">Git</span>
-            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">GitHub</span>
-            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">Figma</span>
-            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">VS Code</span>
-            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">Vercel</span>
+            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">AWS (EC2, S3, Glue)</span>
+            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">MWAA</span>
+            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">Athena</span>
+            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">Redshift</span>
+            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">SageMaker</span>
+            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">GCP / BigQuery</span>
+            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">Databricks</span>
+            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">Terraform</span>
+            <span class="skill-badge bg-emerald-500/15 text-emerald-300 border-emerald-500/30">Linux</span>
+          </div>
+        </div>
+
+        <!-- Database & BI -->
+        <div>
+          <h3 class="text-sm font-semibold text-pink-400 tracking-widest uppercase mb-4 flex items-center gap-2">
+            <span class="w-6 h-0.5 bg-pink-400"></span> Database & BI
+          </h3>
+          <div class="flex flex-wrap gap-3">
+            <span class="skill-badge bg-pink-500/15 text-pink-300 border-pink-500/30">Oracle</span>
+            <span class="skill-badge bg-pink-500/15 text-pink-300 border-pink-500/30">MySQL</span>
+            <span class="skill-badge bg-pink-500/15 text-pink-300 border-pink-500/30">PostgreSQL</span>
+            <span class="skill-badge bg-pink-500/15 text-pink-300 border-pink-500/30">Altibase</span>
+            <span class="skill-badge bg-pink-500/15 text-pink-300 border-pink-500/30">Elasticsearch</span>
+            <span class="skill-badge bg-pink-500/15 text-pink-300 border-pink-500/30">Redis</span>
+            <span class="skill-badge bg-pink-500/15 text-pink-300 border-pink-500/30">Tableau</span>
+            <span class="skill-badge bg-pink-500/15 text-pink-300 border-pink-500/30">Power BI</span>
+            <span class="skill-badge bg-pink-500/15 text-pink-300 border-pink-500/30">Superset</span>
+            <span class="skill-badge bg-pink-500/15 text-pink-300 border-pink-500/30">QuickSight</span>
+          </div>
+        </div>
+
+        <!-- AI/ML & Framework -->
+        <div>
+          <h3 class="text-sm font-semibold text-amber-400 tracking-widest uppercase mb-4 flex items-center gap-2">
+            <span class="w-6 h-0.5 bg-amber-400"></span> AI/ML & Framework
+          </h3>
+          <div class="flex flex-wrap gap-3">
+            <span class="skill-badge bg-amber-500/15 text-amber-300 border-amber-500/30">Scikit-Learn</span>
+            <span class="skill-badge bg-amber-500/15 text-amber-300 border-amber-500/30">GBM</span>
+            <span class="skill-badge bg-amber-500/15 text-amber-300 border-amber-500/30">Spring Framework</span>
+            <span class="skill-badge bg-amber-500/15 text-amber-300 border-amber-500/30">Spring Boot</span>
+            <span class="skill-badge bg-amber-500/15 text-amber-300 border-amber-500/30">Git</span>
           </div>
         </div>
       </div>
@@ -397,12 +554,131 @@
     .skill-badge:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
   </style>
 
+  <!-- ===== EXPERIENCE ===== -->
+  <section id="experience" class="py-24 px-6 section-hidden">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-black gradient-text mb-3">Experience</h2>
+        <p class="text-slate-500">18년 5개월의 엔지니어링 여정</p>
+      </div>
+
+      <div class="relative border-l-2 border-slate-700/60 ml-4 md:ml-6 space-y-10">
+
+        <!-- 디플래닉스 -->
+        <div class="relative pl-8">
+          <span class="timeline-dot"></span>
+          <div class="glass rounded-2xl p-6 card-hover">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <h3 class="text-xl font-bold text-white">디플래닉스주식회사</h3>
+              <span class="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">재직중</span>
+            </div>
+            <p class="text-sm text-slate-400 mb-3">데이터 엔지니어 · 정규직 · 2022.06 - 현재 (3년 7개월)</p>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              교보그룹 통합 데이터 포털 및 파이프라인 PL 수행, Databricks/AWS SageMaker Unified Studio 기반
+              통합 데이터 관리 솔루션 기술 검토, Tableau 운영·성능 최적화를 담당했습니다.
+            </p>
+          </div>
+        </div>
+
+        <!-- 교보정보통신 -->
+        <div class="relative pl-8">
+          <span class="timeline-dot"></span>
+          <div class="glass rounded-2xl p-6 card-hover">
+            <h3 class="text-xl font-bold text-white mb-2">교보정보통신(주)</h3>
+            <p class="text-sm text-slate-400 mb-3">Data Analysis Engineer · 차장 · 2021.12 - 2022.05 (6개월)</p>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              AWS 기반 데이터 분석 환경 Hands-on 교육, 클라우드 사업 기술 지원 및 재사용 가능한
+              개발 패키지(Terraform, PySpark 기반 공통 모듈) 구축을 수행했습니다.
+            </p>
+          </div>
+        </div>
+
+        <!-- 국군 -->
+        <div class="relative pl-8">
+          <span class="timeline-dot"></span>
+          <div class="glass rounded-2xl p-6 card-hover">
+            <h3 class="text-xl font-bold text-white mb-2">국군제1068부대</h3>
+            <p class="text-sm text-slate-400 mb-3">군무원 (7급 전문임기제) · 2021.07 - 2021.12 (6개월)</p>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              국방 분야 데이터 플랫폼 기획 및 텍스트 마이닝 기반 분석 수행(R, Python, Tableau).
+            </p>
+          </div>
+        </div>
+
+        <!-- 위메프 -->
+        <div class="relative pl-8">
+          <span class="timeline-dot"></span>
+          <div class="glass rounded-2xl p-6 card-hover">
+            <h3 class="text-xl font-bold text-white mb-2">(주)위메프</h3>
+            <p class="text-sm text-slate-400 mb-3">백엔드 개발 · 매니저 · 2020.04 - 2021.07 (1년 4개월)</p>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              전사 지표관리 시스템 및 브랜치 로그 수집 시스템 개발·운영
+              (GCP BigQuery, Hadoop, Spark SQL, Airflow, Spring Batch/Kotlin).
+            </p>
+          </div>
+        </div>
+
+        <!-- 베스핀글로벌 -->
+        <div class="relative pl-8">
+          <span class="timeline-dot"></span>
+          <div class="glass rounded-2xl p-6 card-hover">
+            <h3 class="text-xl font-bold text-white mb-2">베스핀글로벌주식회사</h3>
+            <p class="text-sm text-slate-400 mb-3">백엔드 개발 · 매니저 · 2019.01 - 2020.04 (1년 4개월)</p>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              삼성전자 마케팅 플랫폼 통계 파트 전담(수십 TB 피드백 로그 분석·모델링,
+              AWS EC2, Redshift, Elasticsearch 기반 배치 시스템).
+            </p>
+          </div>
+        </div>
+
+        <!-- 다임즈 -->
+        <div class="relative pl-8">
+          <span class="timeline-dot"></span>
+          <div class="glass rounded-2xl p-6 card-hover">
+            <h3 class="text-xl font-bold text-white mb-2">(주)다임즈</h3>
+            <p class="text-sm text-slate-400 mb-3">백엔드 개발 · 과장 · 2013.10 - 2018.12 (5년 3개월)</p>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              SK브로드밴드 Btv 통합 NMS 초기 구축 및 고도화, Apache Flume/Spark Streaming 기반 로그 처리 파이프라인,
+              MeSMS·MeAPM 실시간 모니터링 시스템 개발.
+            </p>
+          </div>
+        </div>
+
+        <!-- 애버커스 -->
+        <div class="relative pl-8">
+          <span class="timeline-dot"></span>
+          <div class="glass rounded-2xl p-6 card-hover">
+            <h3 class="text-xl font-bold text-white mb-2">(주)애버커스</h3>
+            <p class="text-sm text-slate-400 mb-3">SI/SM · 과장 · 2010.05 - 2013.10 (3년 6개월)</p>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              LG U+ HFC망 PowerNMS 운영 및 C→Java 마이그레이션 핵심 기여,
+              KTOA 인터넷트래픽 정산 시스템 개발.
+            </p>
+          </div>
+        </div>
+
+        <!-- ITX -->
+        <div class="relative pl-8">
+          <span class="timeline-dot"></span>
+          <div class="glass rounded-2xl p-6 card-hover">
+            <h3 class="text-xl font-bold text-white mb-2">(주)아이티엑스에이아이</h3>
+            <p class="text-sm text-slate-400 mb-3">임베디드 개발 · 주임 · 2007.08 - 2010.04 (2년 9개월)</p>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              DVR 제품군 GUI 개발(C 기반 GTK, MiniGUI) 및 사내 공통 GUI 라이브러리 구축.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ===== PROJECTS ===== -->
-  <section id="projects" class="py-24 px-6 section-hidden">
+  <section id="projects" class="py-24 px-6 section-hidden" style="background: rgba(30,41,59,0.3)">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-16">
         <h2 class="text-4xl font-black gradient-text mb-3">Projects</h2>
-        <p class="text-slate-500">주요 프로젝트 포트폴리오</p>
+        <p class="text-slate-500">대표 프로젝트 포트폴리오</p>
       </div>
 
       <div class="grid md:grid-cols-3 gap-6">
@@ -411,24 +687,33 @@
         <div class="glass rounded-2xl overflow-hidden card-hover">
           <div class="h-2 bg-gradient-to-r from-blue-500 to-violet-500"></div>
           <div class="p-6">
-            <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-2xl mb-4">🛒</div>
-            <h3 class="text-xl font-bold text-white mb-2">ShopEase</h3>
-            <p class="text-slate-400 text-sm leading-relaxed mb-4">
-              React와 TypeScript로 구현한 풀스택 쇼핑몰 프로젝트.
-              상품 검색, 장바구니, 결제 기능을 포함합니다.
-            </p>
-            <div class="flex flex-wrap gap-2 mb-6">
-              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">React</span>
-              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">TypeScript</span>
-              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">Tailwind</span>
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-2xl">🏢</div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30">PL</span>
             </div>
-            <div class="flex gap-3">
-              <a href="#" class="flex-1 py-2 rounded-lg text-sm font-medium text-center border border-slate-600 text-slate-300 hover:border-blue-500 hover:text-blue-400 transition-colors">
-                GitHub
-              </a>
-              <a href="#" class="flex-1 py-2 rounded-lg text-sm font-medium text-center bg-gradient-to-r from-blue-500 to-violet-500 text-white hover:opacity-90 transition-opacity">
-                Live Demo
-              </a>
+            <h3 class="text-xl font-bold text-white mb-1">그룹 통합 데이터 포털 구축</h3>
+            <p class="text-xs text-slate-500 mb-4">2024.01 - 2025.11 · 디플래닉스</p>
+
+            <div class="space-y-2 mb-4 text-xs">
+              <div class="flex gap-2">
+                <span class="text-blue-400 font-bold shrink-0 w-14">Problem</span>
+                <span class="text-slate-400 leading-relaxed">관계사 단위로 분산된 데이터, 통합 조회·거버넌스 부재</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-violet-400 font-bold shrink-0 w-14">Solution</span>
+                <span class="text-slate-400 leading-relaxed">KTDS·관계사 협업, 요구사항 정의~산출·구현 리딩 PL 수행</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-emerald-400 font-bold shrink-0 w-14">Impact</span>
+                <span class="text-slate-300 leading-relaxed font-semibold">그룹 단위 통합 데이터 환경 구축 · 운영 프로세스 고도화</span>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-2">
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">AWS MWAA</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">Glue</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">Redshift</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-pink-500/20 text-pink-300">PySpark</span>
             </div>
           </div>
         </div>
@@ -437,24 +722,33 @@
         <div class="glass rounded-2xl overflow-hidden card-hover">
           <div class="h-2 bg-gradient-to-r from-violet-500 to-emerald-500"></div>
           <div class="p-6">
-            <div class="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center text-2xl mb-4">📝</div>
-            <h3 class="text-xl font-bold text-white mb-2">TaskFlow</h3>
-            <p class="text-slate-400 text-sm leading-relaxed mb-4">
-              드래그앤드롭을 지원하는 칸반 보드 앱.
-              실시간 협업과 태스크 관리 기능을 제공합니다.
-            </p>
-            <div class="flex flex-wrap gap-2 mb-6">
-              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">Next.js</span>
-              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">Zustand</span>
-              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">Vercel</span>
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center text-2xl">🤖</div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-violet-500/20 text-violet-300 border border-violet-500/30">PL</span>
             </div>
-            <div class="flex gap-3">
-              <a href="#" class="flex-1 py-2 rounded-lg text-sm font-medium text-center border border-slate-600 text-slate-300 hover:border-violet-500 hover:text-violet-400 transition-colors">
-                GitHub
-              </a>
-              <a href="#" class="flex-1 py-2 rounded-lg text-sm font-medium text-center bg-gradient-to-r from-violet-500 to-emerald-500 text-white hover:opacity-90 transition-opacity">
-                Live Demo
-              </a>
+            <h3 class="text-xl font-bold text-white mb-1">교보생명 HR 채용 예측 모델</h3>
+            <p class="text-xs text-slate-500 mb-4">2023.09 - 2024.01 · 디플래닉스</p>
+
+            <div class="space-y-2 mb-4 text-xs">
+              <div class="flex gap-2">
+                <span class="text-blue-400 font-bold shrink-0 w-14">Problem</span>
+                <span class="text-slate-400 leading-relaxed">지원자 속성 기반 입사 후 고성과자 예측 체계 부재</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-violet-400 font-bold shrink-0 w-14">Solution</span>
+                <span class="text-slate-400 leading-relaxed">GBM 모델 + Permutation Importance 기반 주요 요인 도출</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-emerald-400 font-bold shrink-0 w-14">Impact</span>
+                <span class="text-slate-300 leading-relaxed font-semibold">HR 의사결정용 변수 해석·시사점 제공 · 분석 보고서 체계화</span>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-2">
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">Python</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">GBM</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">MySQL</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-pink-500/20 text-pink-300">Scikit-Learn</span>
             </div>
           </div>
         </div>
@@ -463,28 +757,180 @@
         <div class="glass rounded-2xl overflow-hidden card-hover">
           <div class="h-2 bg-gradient-to-r from-emerald-500 to-blue-500"></div>
           <div class="p-6">
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-2xl mb-4">🌤️</div>
-            <h3 class="text-xl font-bold text-white mb-2">WeatherNow</h3>
-            <p class="text-slate-400 text-sm leading-relaxed mb-4">
-              OpenWeather API를 활용한 날씨 앱.
-              위치 기반 실시간 날씨 정보와 7일 예보를 제공합니다.
-            </p>
-            <div class="flex flex-wrap gap-2 mb-6">
-              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">JavaScript</span>
-              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">CSS3</span>
-              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">REST API</span>
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-2xl mb-4">🔬</div>
+            <h3 class="text-xl font-bold text-white mb-1">KAIST-교보생명 데이터 레이크</h3>
+            <p class="text-xs text-slate-500 mb-4">2022.08 - 2023.07 · 디플래닉스</p>
+
+            <div class="space-y-2 mb-4 text-xs">
+              <div class="flex gap-2">
+                <span class="text-blue-400 font-bold shrink-0 w-14">Problem</span>
+                <span class="text-slate-400 leading-relaxed">KAIST 연구팀이 활용할 분석 인프라·외부 데이터 통합 부재</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-violet-400 font-bold shrink-0 w-14">Solution</span>
+                <span class="text-slate-400 leading-relaxed">S3 기반 데이터 레이크 + Glue Catalog + Athena SQL 환경 구축, Terraform IaC 자동화</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-emerald-400 font-bold shrink-0 w-14">Impact</span>
+                <span class="text-slate-300 leading-relaxed font-semibold">내부/외부 데이터 단일 카탈로그 통합 · Lambda·SNS 장애 감지 자동화</span>
+              </div>
             </div>
-            <div class="flex gap-3">
-              <a href="#" class="flex-1 py-2 rounded-lg text-sm font-medium text-center border border-slate-600 text-slate-300 hover:border-emerald-500 hover:text-emerald-400 transition-colors">
-                GitHub
-              </a>
-              <a href="#" class="flex-1 py-2 rounded-lg text-sm font-medium text-center bg-gradient-to-r from-emerald-500 to-blue-500 text-white hover:opacity-90 transition-opacity">
-                Live Demo
-              </a>
+
+            <div class="flex flex-wrap gap-2 mb-2">
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">AWS Glue</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">Athena</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">Terraform</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-pink-500/20 text-pink-300">Lambda</span>
             </div>
           </div>
         </div>
 
+        <!-- Card 4 -->
+        <div class="glass rounded-2xl overflow-hidden card-hover">
+          <div class="h-2 bg-gradient-to-r from-blue-500 to-emerald-500"></div>
+          <div class="p-6">
+            <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-2xl mb-4">📊</div>
+            <h3 class="text-xl font-bold text-white mb-1">위메프 전사 지표관리 시스템</h3>
+            <p class="text-xs text-slate-500 mb-4">2020.04 - 2021.06 · 위메프</p>
+
+            <div class="space-y-2 mb-4 text-xs">
+              <div class="flex gap-2">
+                <span class="text-blue-400 font-bold shrink-0 w-14">Problem</span>
+                <span class="text-slate-400 leading-relaxed">웹·앱 로그 · RDBMS 정형데이터 분산 → 전사 지표 통합 부재</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-violet-400 font-bold shrink-0 w-14">Solution</span>
+                <span class="text-slate-400 leading-relaxed">BigQuery·Hadoop 이중 환경 ETL + Airflow 스케줄링, Spark SQL로 집계 로직 재구축</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-emerald-400 font-bold shrink-0 w-14">Impact</span>
+                <span class="text-slate-300 leading-relaxed font-semibold">마케팅·검색·추천·A/B 테스트 <strong class="text-white">4개 핵심 서비스</strong>에 지표 제공</span>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-2">
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">BigQuery</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">Hadoop</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">Spark SQL</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-pink-500/20 text-pink-300">Airflow</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="glass rounded-2xl overflow-hidden card-hover">
+          <div class="h-2 bg-gradient-to-r from-violet-500 to-pink-500"></div>
+          <div class="p-6">
+            <div class="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center text-2xl mb-4">📱</div>
+            <h3 class="text-xl font-bold text-white mb-1">삼성전자 마케팅 플랫폼 통계</h3>
+            <p class="text-xs text-slate-500 mb-4">2019.01 - 2020.04 · 베스핀글로벌</p>
+
+            <div class="space-y-2 mb-4 text-xs">
+              <div class="flex gap-2">
+                <span class="text-blue-400 font-bold shrink-0 w-14">Problem</span>
+                <span class="text-slate-400 leading-relaxed"><strong class="text-white">수십 TB</strong> 규모 단말·피드백 로그 → 통계 기준 모호, 쿼리 지연</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-violet-400 font-bold shrink-0 w-14">Solution</span>
+                <span class="text-slate-400 leading-relaxed">AWS EC2 + Spring Batch 통계 Job 설계, Redshift/Elasticsearch 쿼리 전면 개선</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-emerald-400 font-bold shrink-0 w-14">Impact</span>
+                <span class="text-slate-300 leading-relaxed font-semibold">Redshift 느린 쿼리 개선으로 <strong class="text-white">처리시간 단축</strong> · 통계 기준 재설계로 고객 신뢰도 향상</span>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-2">
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">AWS EC2</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">Redshift</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">Elasticsearch</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-pink-500/20 text-pink-300">Spring Batch</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="glass rounded-2xl overflow-hidden card-hover">
+          <div class="h-2 bg-gradient-to-r from-emerald-500 to-violet-500"></div>
+          <div class="p-6">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-2xl mb-4">📡</div>
+            <h3 class="text-xl font-bold text-white mb-1">SK Btv 통합 NMS & 실시간 분석</h3>
+            <p class="text-xs text-slate-500 mb-4">2013.10 - 2018.12 · 다임즈</p>
+
+            <div class="space-y-2 mb-4 text-xs">
+              <div class="flex gap-2">
+                <span class="text-blue-400 font-bold shrink-0 w-14">Problem</span>
+                <span class="text-slate-400 leading-relaxed">Btv 셋톱박스 대규모 로그 실시간 분석 한계 (초기 성능 병목)</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-violet-400 font-bold shrink-0 w-14">Solution</span>
+                <span class="text-slate-400 leading-relaxed">Flume + Spark Streaming 파이프라인 설계, Batch Size·메모리 튜닝 반복 수행</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-emerald-400 font-bold shrink-0 w-14">Impact</span>
+                <span class="text-slate-300 leading-relaxed font-semibold"><strong class="text-white">9GB 로그 분석·DB 적재 3분 40초</strong> 달성 (초기 대비 대폭 향상)</span>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-2">
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">Apache Flume</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">Spark Streaming</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">Elasticsearch</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-pink-500/20 text-pink-300">Redis</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EDUCATION & CERTIFICATION ===== -->
+  <section id="education" class="py-24 px-6 section-hidden">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-black gradient-text mb-3">Education & Certification</h2>
+        <p class="text-slate-500">학력 및 자격증</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- Education -->
+        <div class="glass rounded-2xl p-6">
+          <h3 class="text-sm font-semibold text-blue-400 tracking-widest uppercase mb-4">Education</h3>
+          <div class="space-y-5">
+            <div>
+              <h4 class="text-lg font-bold text-white">국민대학교 대학원</h4>
+              <p class="text-sm text-slate-400 mt-1">AI 빅데이터학과 · 공학석사</p>
+              <p class="text-xs text-slate-500 mt-1">2024.03 - 2026.02 (졸업 예정)</p>
+              <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                AI 빅데이터프로그래밍, 데이터모델링과 SQL, 통계분석, 머신러닝, 딥러닝, 텍스트데이터 분석,
+                생성형 AI, 추천시스템, 클라우드 머신러닝
+              </p>
+            </div>
+            <div class="border-t border-slate-700 pt-4">
+              <h4 class="text-lg font-bold text-white">동덕여자대학교</h4>
+              <p class="text-sm text-slate-400 mt-1">컴퓨터공학과 · 학사</p>
+              <p class="text-xs text-slate-500 mt-1">2001.03 - 2006.02 (졸업)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certification -->
+        <div class="glass rounded-2xl p-6">
+          <h3 class="text-sm font-semibold text-emerald-400 tracking-widest uppercase mb-4">Certification</h3>
+          <div class="space-y-5">
+            <div>
+              <h4 class="text-lg font-bold text-white">AWS Certified Machine Learning – Specialty</h4>
+              <p class="text-sm text-slate-400 mt-1">Amazon Web Services</p>
+              <p class="text-xs text-slate-500 mt-1">2024.03 취득</p>
+            </div>
+            <div class="border-t border-slate-700 pt-4">
+              <h4 class="text-lg font-bold text-white">ADsP 데이터 분석 준전문가</h4>
+              <p class="text-sm text-slate-400 mt-1">한국데이터산업진흥원</p>
+              <p class="text-xs text-slate-500 mt-1">2023.03 취득</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -502,26 +948,28 @@
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center mb-10">
-          <a href="mailto:hello@example.com"
+          <a href="mailto:wooyeon8303@gmail.com"
              class="flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 to-violet-500 text-white font-semibold hover:opacity-90 transition-opacity">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
             </svg>
             이메일 보내기
           </a>
-          <a href="https://github.com/username" target="_blank" rel="noopener noreferrer"
+          <a href="https://www.linkedin.com/in/wooyeon-choi-2514a827a/" target="_blank" rel="noopener noreferrer"
              class="flex items-center justify-center gap-3 px-8 py-4 rounded-xl border border-slate-600 text-slate-300 font-semibold hover:border-violet-500 hover:text-white transition-all">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
             </svg>
-            GitHub 프로필
+            LinkedIn 프로필
           </a>
         </div>
 
-        <div class="flex justify-center gap-6 text-slate-500 text-sm">
-          <span class="flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            현재 채용 오픈
+        <div class="flex justify-center text-slate-400 text-sm">
+          <span class="flex items-center justify-center gap-2">
+            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            wooyeon8303@gmail.com
           </span>
         </div>
       </div>
@@ -530,17 +978,17 @@
 
   <!-- ===== FOOTER ===== -->
   <footer class="py-8 px-6 border-t border-slate-800 text-center text-slate-600 text-sm">
-    <p>© 2026 개발자1. Built with HTML, CSS & JavaScript + Tailwind CSS</p>
+    <p>© 2026 최우연. Built with HTML, CSS & JavaScript + Tailwind CSS</p>
   </footer>
 
   <!-- ===== JAVASCRIPT ===== -->
   <script>
     // --- Typing animation ---
     const roles = [
-      'Frontend Developer 💻',
-      'UI/UX Enthusiast 🎨',
-      'React Developer ⚛️',
-      'Open Source Contributor 🌱',
+      'Data Engineer 🛠️',
+      'Data Platform Architect ☁️',
+      'AI/ML Pipeline Builder 🤖',
+      'BI & Visualization Engineer 📊',
     ];
     let roleIndex = 0, charIndex = 0, isDeleting = false;
     const typingEl = document.getElementById('typing-text');
