@@ -71,13 +71,14 @@
       <a href="#hero" class="text-xl font-bold gradient-text">최우연</a>
 
       <!-- Desktop Nav -->
-      <nav class="hidden md:flex items-center gap-8">
-        <a href="#about"      class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">About</a>
-        <a href="#skills"     class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Skills</a>
-        <a href="#experience" class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Experience</a>
-        <a href="#projects"   class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Projects</a>
-        <a href="#writings"   class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Writings</a>
-        <a href="#contact"    class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Contact</a>
+      <nav class="hidden md:flex items-center gap-6">
+        <a href="#about"       class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">About</a>
+        <a href="#highlights"  class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Highlights</a>
+        <a href="#skills"      class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Skills</a>
+        <a href="#experience"  class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Experience</a>
+        <a href="#projects"    class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Projects</a>
+        <a href="#writings"    class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Writings</a>
+        <a href="#contact"     class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Contact</a>
         <a href="#contact" class="px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-blue-500 via-violet-500 to-emerald-500 text-white hover:opacity-90 transition-opacity">
           연락하기
         </a>
@@ -93,12 +94,13 @@
 
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden md:hidden px-6 pb-6 flex flex-col gap-4">
-      <a href="#about"      class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">About</a>
-      <a href="#skills"     class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Skills</a>
-      <a href="#experience" class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Experience</a>
-      <a href="#projects"   class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Projects</a>
-      <a href="#writings"   class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Writings</a>
-      <a href="#contact"    class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Contact</a>
+      <a href="#about"       class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">About</a>
+      <a href="#highlights"  class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Highlights</a>
+      <a href="#skills"      class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Skills</a>
+      <a href="#experience"  class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Experience</a>
+      <a href="#projects"    class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Projects</a>
+      <a href="#writings"    class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Writings</a>
+      <a href="#contact"     class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Contact</a>
     </div>
   </header>
 
@@ -453,15 +455,190 @@
           </div>
         </div>
       </div>
+
+      <!-- 커리어 진화 서사 -->
+      <div class="mt-20">
+        <h3 class="text-sm font-semibold text-slate-400 tracking-widest uppercase mb-6 text-center">Career Evolution · 18년의 진화</h3>
+        <div class="glass rounded-2xl p-6 md:p-8">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-2 items-stretch">
+            <!-- Phase 1 -->
+            <div class="relative p-5 rounded-xl bg-gradient-to-br from-blue-500/10 to-transparent border border-blue-500/20">
+              <div class="text-[10px] font-bold text-blue-400 tracking-widest mb-2">PHASE 1 · 2007~2010</div>
+              <div class="text-lg font-bold text-white mb-1">임베디드 개발</div>
+              <div class="text-xs text-slate-400 leading-relaxed">C·GTK 기반 DVR GUI 개발, 저사양 환경 성능 최적화</div>
+            </div>
+            <!-- Phase 2 -->
+            <div class="relative p-5 rounded-xl bg-gradient-to-br from-violet-500/10 to-transparent border border-violet-500/20">
+              <div class="text-[10px] font-bold text-violet-400 tracking-widest mb-2">PHASE 2 · 2010~2018</div>
+              <div class="text-lg font-bold text-white mb-1">백엔드·네트워크</div>
+              <div class="text-xs text-slate-400 leading-relaxed">Java 마이그레이션, NMS·모니터링 시스템, Spark Streaming 도입</div>
+            </div>
+            <!-- Phase 3 -->
+            <div class="relative p-5 rounded-xl bg-gradient-to-br from-emerald-500/10 to-transparent border border-emerald-500/20">
+              <div class="text-[10px] font-bold text-emerald-400 tracking-widest mb-2">PHASE 3 · 2019~2022</div>
+              <div class="text-lg font-bold text-white mb-1">빅데이터 플랫폼</div>
+              <div class="text-xs text-slate-400 leading-relaxed">수십 TB 통계·전사 지표 시스템, AWS 데이터 분석 환경 구축</div>
+            </div>
+            <!-- Phase 4 -->
+            <div class="relative p-5 rounded-xl bg-gradient-to-br from-pink-500/10 to-transparent border border-pink-500/20">
+              <div class="text-[10px] font-bold text-pink-400 tracking-widest mb-2">PHASE 4 · 2022~현재</div>
+              <div class="text-lg font-bold text-white mb-1">Data Platform · AI/ML</div>
+              <div class="text-xs text-slate-400 leading-relaxed">그룹 통합 데이터 포털 PL, AI/ML 파이프라인, Databricks 기술 검토</div>
+            </div>
+          </div>
+          <p class="mt-6 text-center text-sm text-slate-400 leading-relaxed">
+            하드웨어에 가까운 <span class="text-blue-300">임베디드</span>에서 시작해, 서비스 규모의 <span class="text-violet-300">백엔드</span>,
+            대규모 <span class="text-emerald-300">빅데이터</span>를 거쳐, 조직 단위의 <span class="text-pink-300">데이터 플랫폼·AI/ML</span>로 확장해 왔습니다.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CAREER HIGHLIGHTS ===== -->
+  <section id="highlights" class="py-24 px-6 section-hidden" style="background: rgba(30,41,59,0.3)">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-black gradient-text mb-3">Career Highlights</h2>
+        <p class="text-slate-500">18년 경력의 핵심 성과</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- 1 -->
+        <div class="glass rounded-2xl p-6 card-hover border-t-2 border-blue-500/40">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-11 h-11 rounded-xl bg-blue-500/20 flex items-center justify-center text-xl">⚡</div>
+            <div class="text-[10px] font-bold text-blue-400 tracking-widest">PERFORMANCE</div>
+          </div>
+          <div class="text-3xl font-black text-white mb-1">3분 40초</div>
+          <div class="text-sm font-semibold text-slate-200 mb-2">9GB 로그 실시간 분석</div>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            SK Btv Spark Streaming 기반 파이프라인 튜닝으로 초기 대비 대폭 성능 향상
+          </p>
+        </div>
+
+        <!-- 2 -->
+        <div class="glass rounded-2xl p-6 card-hover border-t-2 border-violet-500/40">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-11 h-11 rounded-xl bg-violet-500/20 flex items-center justify-center text-xl">📊</div>
+            <div class="text-[10px] font-bold text-violet-400 tracking-widest">SCALE</div>
+          </div>
+          <div class="text-3xl font-black text-white mb-1">수십 TB</div>
+          <div class="text-sm font-semibold text-slate-200 mb-2">실시간 데이터 처리</div>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            삼성전자 마케팅 플랫폼 · SK브로드밴드 NMS 등 대규모 트래픽 시스템 구축·운영
+          </p>
+        </div>
+
+        <!-- 3 -->
+        <div class="glass rounded-2xl p-6 card-hover border-t-2 border-emerald-500/40">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-11 h-11 rounded-xl bg-emerald-500/20 flex items-center justify-center text-xl">👥</div>
+            <div class="text-[10px] font-bold text-emerald-400 tracking-widest">LEADERSHIP</div>
+          </div>
+          <div class="text-3xl font-black text-white mb-1">PL × 2</div>
+          <div class="text-sm font-semibold text-slate-200 mb-2">프로젝트 리드 수행</div>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            그룹 통합 데이터 포털 (2024~) · 교보생명 HR 채용 예측 모델 (2023)
+          </p>
+        </div>
+
+        <!-- 4 -->
+        <div class="glass rounded-2xl p-6 card-hover border-t-2 border-pink-500/40">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-11 h-11 rounded-xl bg-pink-500/20 flex items-center justify-center text-xl">🎓</div>
+            <div class="text-[10px] font-bold text-pink-400 tracking-widest">EXPERTISE</div>
+          </div>
+          <div class="text-3xl font-black text-white mb-1">AI/ML</div>
+          <div class="text-sm font-semibold text-slate-200 mb-2">AWS ML Specialty · 석사</div>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            AWS Certified ML Specialty (2024) · 국민대 AI 빅데이터학 석사 (2026.02 예정)
+          </p>
+        </div>
+      </div>
+
+      <!-- 업계 경험 뱃지 -->
+      <div class="mt-12">
+        <h3 class="text-xs font-semibold text-slate-500 tracking-widest uppercase mb-4 text-center">함께 일해온 기업·기관</h3>
+        <div class="flex flex-wrap gap-2 justify-center">
+          <span class="px-4 py-2 rounded-full text-sm bg-slate-800/70 text-slate-300 border border-slate-700 hover:border-blue-400/50 transition-colors">교보생명</span>
+          <span class="px-4 py-2 rounded-full text-sm bg-slate-800/70 text-slate-300 border border-slate-700 hover:border-violet-400/50 transition-colors">SK 브로드밴드</span>
+          <span class="px-4 py-2 rounded-full text-sm bg-slate-800/70 text-slate-300 border border-slate-700 hover:border-emerald-400/50 transition-colors">삼성전자</span>
+          <span class="px-4 py-2 rounded-full text-sm bg-slate-800/70 text-slate-300 border border-slate-700 hover:border-pink-400/50 transition-colors">위메프</span>
+          <span class="px-4 py-2 rounded-full text-sm bg-slate-800/70 text-slate-300 border border-slate-700 hover:border-amber-400/50 transition-colors">LG U+</span>
+          <span class="px-4 py-2 rounded-full text-sm bg-slate-800/70 text-slate-300 border border-slate-700 hover:border-blue-400/50 transition-colors">KAIST</span>
+          <span class="px-4 py-2 rounded-full text-sm bg-slate-800/70 text-slate-300 border border-slate-700 hover:border-violet-400/50 transition-colors">KTOA</span>
+          <span class="px-4 py-2 rounded-full text-sm bg-slate-800/70 text-slate-300 border border-slate-700 hover:border-emerald-400/50 transition-colors">NH농협</span>
+          <span class="px-4 py-2 rounded-full text-sm bg-slate-800/70 text-slate-300 border border-slate-700 hover:border-pink-400/50 transition-colors">KBS</span>
+          <span class="px-4 py-2 rounded-full text-sm bg-slate-800/70 text-slate-300 border border-slate-700 hover:border-amber-400/50 transition-colors">국방부</span>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- ===== SKILLS ===== -->
-  <section id="skills" class="py-24 px-6 section-hidden" style="background: rgba(30,41,59,0.3)">
+  <section id="skills" class="py-24 px-6 section-hidden">
     <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-16">
+      <div class="text-center mb-12">
         <h2 class="text-4xl font-black gradient-text mb-3">Skills</h2>
-        <p class="text-slate-500">사용하는 기술 스택</p>
+        <p class="text-slate-500">사용하는 기술 스택 · 숙련도 기준 분류</p>
+      </div>
+
+      <!-- 숙련도 레벨 (Expert / Advanced / Familiar) -->
+      <div class="glass rounded-2xl p-6 mb-12">
+        <h3 class="text-xs font-semibold text-slate-400 tracking-widest uppercase mb-4">Proficiency Level</h3>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div>
+            <div class="flex items-center gap-2 mb-3">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span class="text-sm font-bold text-emerald-300">Expert</span>
+              <span class="text-[10px] text-slate-500">· 5년+ 실무</span>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/10 text-emerald-300">Java</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/10 text-emerald-300">Python</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/10 text-emerald-300">SQL</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/10 text-emerald-300">Spark / PySpark</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/10 text-emerald-300">Airflow</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/10 text-emerald-300">AWS</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/10 text-emerald-300">Spring Framework</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/10 text-emerald-300">Linux</span>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 mb-3">
+              <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+              <span class="text-sm font-bold text-blue-300">Advanced</span>
+              <span class="text-[10px] text-slate-500">· 2~5년 실무</span>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/10 text-blue-300">Kotlin</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/10 text-blue-300">Tableau</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/10 text-blue-300">BigQuery</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/10 text-blue-300">Redshift</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/10 text-blue-300">Elasticsearch</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/10 text-blue-300">Hadoop</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/10 text-blue-300">Spark Streaming</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/10 text-blue-300">Oracle / MySQL</span>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 mb-3">
+              <span class="w-2 h-2 rounded-full bg-violet-400"></span>
+              <span class="text-sm font-bold text-violet-300">Familiar</span>
+              <span class="text-[10px] text-slate-500">· 실무 경험 있음</span>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/10 text-violet-300">Terraform</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/10 text-violet-300">Databricks</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/10 text-violet-300">SageMaker</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/10 text-violet-300">GBM / Scikit-Learn</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/10 text-violet-300">R</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/10 text-violet-300">Redis</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/10 text-violet-300">C / C++</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="space-y-10">
