@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Databricks vs SageMaker Unified Studio — 기술 검토 관점 비교 | 최우연</title>
+  <meta name="description" content="금융 도메인 데이터 관리 솔루션 구축을 위해 Databricks와 SageMaker Unified Studio를 직접 핸즈온으로 검토한 PL 관점의 회고. 카탈로그·리니지·품질·권한·감사 기능을 비교하고, 컨트롤 플레인 위치가 보안 검토에 미치는 영향을 정리." />
+  <meta name="author" content="최우연 (Wooyeon Choi)" />
+  <style>
+    :root {
+      --bg: #0F172A;
+      --bg-soft: #1E293B;
+      --bg-code: #0B1220;
+      --line: rgba(148, 163, 184, 0.15);
+      --text: #E2E8F0;
+      --text-soft: #94A3B8;
+      --text-muted: #64748B;
+      --indigo: #818CF8;
+      --indigo-strong: #6366F1;
+      --violet: #A78BFA;
+      --blue: #60A5FA;
+      --emerald: #34D399;
+      --amber: #FBBF24;
+      --rose: #FB7185;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      line-height: 1.8;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 64px 24px 96px; }
+    .back {
+      display: inline-block; margin-bottom: 32px; color: var(--text-soft);
+      text-decoration: none; font-size: 14px; border-bottom: 1px dashed transparent;
+      transition: color .2s, border-color .2s;
+    }
+    .back:hover { color: var(--indigo); border-color: var(--indigo); }
+    h1 {
+      font-size: 30px; line-height: 1.35; letter-spacing: -0.01em;
+      margin: 0 0 20px; color: #F8FAFC; font-weight: 700;
+    }
+    .meta {
+      display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center;
+      color: var(--text-muted); font-size: 13px; margin: 0 0 12px;
+    }
+    .meta .dot { width: 3px; height: 3px; background: var(--text-muted); border-radius: 50%; display: inline-block; }
+    .tags { margin: 0 0 40px; }
+    .tag {
+      display: inline-block; font-size: 12px; padding: 4px 10px; margin-right: 6px; margin-top: 6px;
+      border-radius: 999px; background: rgba(99, 102, 241, 0.12); color: var(--indigo);
+      border: 1px solid rgba(99, 102, 241, 0.25); letter-spacing: 0.02em;
+    }
+    h2 {
+      font-size: 22px; line-height: 1.4; margin: 56px 0 18px; color: #F1F5F9;
+      font-weight: 700; letter-spacing: -0.005em;
+      padding-bottom: 10px; border-bottom: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 17px; margin: 32px 0 12px; color: var(--indigo);
+      font-weight: 600; letter-spacing: 0;
+    }
+    p { margin: 14px 0; color: var(--text); }
+    strong { color: #F8FAFC; font-weight: 600; }
+    em { color: var(--violet); font-style: normal; }
+    ul, ol { padding-left: 22px; margin: 14px 0; }
+    li { margin: 6px 0; }
+    a { color: var(--blue); }
+    code {
+      font-family: "JetBrains Mono", "Fira Code", Consolas, Menlo, monospace;
+      font-size: 0.92em;
+      color: var(--emerald);
+      background: rgba(52, 211, 153, 0.08);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+    .callout {
+      border-left: 3px solid var(--indigo-strong);
+      background: rgba(99, 102, 241, 0.06);
+      padding: 14px 18px; margin: 22px 0; border-radius: 0 6px 6px 0;
+      color: var(--text-soft); font-size: 14.5px;
+    }
+    .callout strong { color: var(--indigo); }
+    .callout.opinion {
+      border-left-color: var(--violet);
+      background: rgba(167, 139, 250, 0.06);
+    }
+    .callout.opinion strong { color: var(--violet); }
+    .tldr {
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      background: rgba(99, 102, 241, 0.04);
+      padding: 18px 22px;
+      border-radius: 10px;
+      margin: 24px 0 32px;
+    }
+    .tldr h3 { margin-top: 0; color: var(--indigo); }
+    .tldr ul { margin: 8px 0 0; padding-left: 20px; }
+    .tldr li { color: var(--text-soft); font-size: 14.5px; }
+
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--indigo); font-weight: 600; background: rgba(99, 102, 241, 0.05); }
+    td { color: var(--text); }
+    .legend {
+      margin-top: 8px; font-size: 12.5px; color: var(--text-muted);
+      letter-spacing: 0.01em;
+    }
+    .mark-good { color: var(--emerald); font-weight: 600; }
+    .mark-ok   { color: var(--blue); font-weight: 600; }
+    .mark-warn { color: var(--amber); font-weight: 600; }
+    .mark-bad  { color: var(--rose); font-weight: 600; }
+
+    /* ===== Architecture Diagram ===== */
+    .arch {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px;
+      margin: 22px 0;
+      background: rgba(30, 41, 59, 0.5);
+      overflow-x: auto;
+    }
+    .arch-title {
+      font-size: 13px; font-weight: 600; color: var(--indigo);
+      letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .arch-caption {
+      font-size: 12.5px; color: var(--text-muted); margin-top: 10px; line-height: 1.6;
+    }
+    .arch svg { width: 100%; height: auto; display: block; }
+
+    hr { border: none; border-top: 1px solid var(--line); margin: 48px 0; }
+    .footer-note {
+      margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line);
+      color: var(--text-muted); font-size: 13px;
+    }
+    @media (max-width: 640px) {
+      h1 { font-size: 24px; }
+      h2 { font-size: 19px; }
+      .wrap { padding: 48px 18px 72px; }
+      table { font-size: 13px; }
+      th, td { padding: 8px 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="index.html">&larr; 포트폴리오로 돌아가기</a>
+
+    <h1>Databricks vs SageMaker Unified Studio — 기술 검토 관점 비교</h1>
+
+    <div class="meta">
+      <span>2026-04-21</span>
+      <span class="dot"></span>
+      <span>최우연 · Data Engineer / PL</span>
+      <span class="dot"></span>
+      <span>PL 관점 회고 · 금융 도메인 데이터 관리 솔루션 구축 사례</span>
+    </div>
+    <div class="tags">
+      <span class="tag">Databricks</span>
+      <span class="tag">SageMaker Unified Studio</span>
+      <span class="tag">Data Governance</span>
+      <span class="tag">Unity Catalog</span>
+      <span class="tag">Data Platform</span>
+    </div>
+
+    <!-- ===== TL;DR ===== -->
+    <div class="tldr">
+      <h3>한눈에 보기 (핵심 요약)</h3>
+      <ul>
+        <li>그룹 통합 데이터 플랫폼 Phase3 <strong>데이터 관리 솔루션</strong> 구축을 위해 SageMaker Unified Studio와 Databricks를 <strong>직접 핸즈온으로 검토</strong>했습니다.</li>
+        <li>초반에는 Databricks로 방향을 잡았으나, <strong>금융권 도메인 데이터</strong>가 유입되는 환경 특성과 <strong>Databricks 컨트롤 플레인이 Databricks 소유 클라우드 계정에 존재</strong>한다는 점 때문에 보안 검토 범위가 크게 확장되었고, 대안으로 SageMaker Unified Studio를 검토하게 되었습니다.</li>
+        <li>최종 결론은 <strong>"데이터 관리 솔루션의 핵심 기능(카탈로그·리니지·품질·권한·감사) 구현에는 Databricks가 더 적합하다"</strong> 입니다. 단, 금융권 보안 요건을 충족하기 위한 컨트롤 플레인 격리·계약상의 책임 범위는 별도의 의사결정이 필요합니다.</li>
+        <li>이 글은 실제 POC를 통해 확인한 기능 차이를, <strong>데이터 거버넌스를 책임지는 PL 관점</strong>에서 정리한 기록입니다.</li>
+      </ul>
+    </div>
+
+    <!-- ===== 1. 배경 ===== -->
+    <h2>1. 배경 — 왜 두 플랫폼을 동시에 검토했는가</h2>
+    <p>
+      그룹 통합 데이터 플랫폼 Phase3의 목표는 단순한 분석 환경 구축이 아니라,
+      <strong>계열사 전반에 걸친 데이터 자산을 체계적으로 관리할 수 있는 "데이터 관리 솔루션"</strong>을
+      갖추는 것이었습니다. 요구사항은 명확했습니다.
+    </p>
+    <ol>
+      <li><strong>카탈로그·메타데이터 중앙 관리</strong> — 계열사 데이터가 한 곳에서 탐색/관리되어야 함</li>
+      <li><strong>데이터 리니지 자동 수집</strong> — 누가 어떤 데이터를 어떻게 가공했는지 추적 가능해야 함</li>
+      <li><strong>데이터 품질 관리</strong> — 품질 기준 설정, 미달 데이터 격리/재적재 가능해야 함</li>
+      <li><strong>세분화된 권한 제어와 마스킹</strong> — 금융 도메인 결합 데이터이므로 컬럼 단위 통제 필수</li>
+      <li><strong>감사로깅</strong> — 규제 대응을 위한 접근·변경 이력 추적</li>
+      <li><strong>외부 포털과의 연동</strong> — 임베딩/API 기반으로 사내 데이터 포털과 결합</li>
+    </ol>
+    <p>
+      초기 내부 리서치 단계에서는 Unity Catalog 기반의 <strong>Databricks가 요구사항과 가장 잘 맞는다</strong>는 평가가 있었습니다.
+      Lakehouse 아키텍처의 성숙도, 자동 리니지, ABAC, 풍부한 고객 레퍼런스가 이유였습니다.
+    </p>
+    <p>
+      그러나 <strong>금융 도메인이 결합된 데이터가 유입되는 구조</strong>라는 점이 의사결정의 축을 흔들었습니다.
+      Databricks는 멀티클라우드를 지원하는 대신 <strong>컨트롤 플레인이 Databricks 소유 클라우드 계정에 존재</strong>하는
+      구조입니다. 즉, 메타데이터·작업 제어·사용자 세션과 같은 플랫폼의 "두뇌" 영역이 고객사 VPC 밖에 있습니다.
+      워크로드가 실행되는 데이터 플레인은 고객사 계정 내에서 동작하지만, 컨트롤 플레인은 Databricks가 운영하는
+      공간에 있다는 사실은 금융권 정보보안 검토 관점에서
+      <strong>추가적인 위탁평가·CSP 적합성 검토·혁신금융서비스 지정 여부 확인</strong>을 필요로 하게 만듭니다.
+    </p>
+    <p>
+      그래서 "SageMaker Unified Studio로 대체 가능한가"를 동일한 기준으로 다시 평가해야 했고,
+      그 결과를 공유하기 위해 두 플랫폼을 <strong>기능별로 직접 핸즈온 비교</strong>하게 된 것이 이번 검토의 배경입니다.
+    </p>
+
+    <h3>검토 대상 아키텍처 — 두 플랫폼은 "데이터 관리 솔루션 계층"을 어디에 두는가</h3>
+    <p>
+      아래 두 다이어그램은 실제 POC에 사용한 아키텍처 구성도를 단순화해 재구성한 것입니다.
+      붉은 점선 박스가 <strong>"데이터 관리 솔루션"에 해당하는 거버넌스 계층</strong>이며, 이 계층의 구성 방식이
+      플랫폼 선택의 핵심 차이점입니다.
+    </p>
+
+    <!-- ===== Architecture Diagram 1: SMUS ===== -->
+    <div class="arch">
+      <div class="arch-title">Architecture 1 · SageMaker Unified Studio 기반 구성</div>
+      <svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SMUS 기반 데이터 플랫폼 아키텍처">
+        <defs>
+          <linearGradient id="smusBox" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1E293B"/>
+            <stop offset="100%" stop-color="#0F172A"/>
+          </linearGradient>
+          <marker id="arrow1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#64748B"/>
+          </marker>
+        </defs>
+        <style>
+          .lbl { font: 600 12px 'Segoe UI', sans-serif; fill: #E2E8F0; }
+          .lbl-sm { font: 500 10.5px 'Segoe UI', sans-serif; fill: #94A3B8; }
+          .lbl-title { font: 700 12px 'Segoe UI', sans-serif; fill: #818CF8; letter-spacing: 0.08em; text-transform: uppercase; }
+          .lbl-section { font: 700 13px 'Segoe UI', sans-serif; fill: #F1F5F9; }
+          .svc-box { fill: url(#smusBox); stroke: rgba(99,102,241,0.35); stroke-width: 1; }
+          .svc-box-g { fill: rgba(52, 211, 153, 0.08); stroke: rgba(52, 211, 153, 0.4); stroke-width: 1; }
+          .svc-box-a { fill: rgba(251, 191, 36, 0.06); stroke: rgba(251, 191, 36, 0.35); stroke-width: 1; }
+          .gov-frame { fill: none; stroke: #FB7185; stroke-width: 2; stroke-dasharray: 6 4; }
+          .arrow { stroke: #64748B; stroke-width: 1.2; fill: none; }
+          .region { fill: none; stroke: rgba(148,163,184,0.2); stroke-width: 1; stroke-dasharray: 3 3; }
+        </style>
+
+        <!-- AWS Cloud Region boundary -->
+        <rect x="160" y="40" width="560" height="420" rx="10" class="region"/>
+        <text x="170" y="58" class="lbl-sm">AWS Cloud · Seoul Region</text>
+
+        <!-- Data Sources -->
+        <text x="20" y="70" class="lbl-title">Sources</text>
+        <rect x="20" y="80" width="120" height="56" rx="6" class="svc-box"/>
+        <text x="80" y="104" class="lbl" text-anchor="middle">관계사/외부</text>
+        <text x="80" y="122" class="lbl-sm" text-anchor="middle">SFTP · 외부 DB</text>
+
+        <rect x="20" y="150" width="120" height="56" rx="6" class="svc-box"/>
+        <text x="80" y="174" class="lbl" text-anchor="middle">스트리밍</text>
+        <text x="80" y="192" class="lbl-sm" text-anchor="middle">Kinesis · MSK</text>
+
+        <!-- SageMaker Unified Studio container -->
+        <rect x="180" y="80" width="400" height="230" rx="8" fill="rgba(99,102,241,0.04)" stroke="rgba(99,102,241,0.4)" stroke-width="1.2"/>
+        <text x="200" y="100" class="lbl-section">Amazon SageMaker Unified Studio</text>
+
+        <!-- SQL/BI -->
+        <rect x="200" y="114" width="170" height="44" rx="5" class="svc-box"/>
+        <text x="285" y="132" class="lbl" text-anchor="middle">SQL Analytics · BI</text>
+        <text x="285" y="148" class="lbl-sm" text-anchor="middle">Redshift · QuickSight</text>
+
+        <!-- Processing -->
+        <rect x="380" y="114" width="185" height="44" rx="5" class="svc-box"/>
+        <text x="472" y="132" class="lbl" text-anchor="middle">Data Processing</text>
+        <text x="472" y="148" class="lbl-sm" text-anchor="middle">Glue · EMR · Athena · MWAA</text>
+
+        <!-- ML/GenAI -->
+        <rect x="200" y="170" width="170" height="44" rx="5" class="svc-box"/>
+        <text x="285" y="188" class="lbl" text-anchor="middle">ML &amp; Gen AI</text>
+        <text x="285" y="204" class="lbl-sm" text-anchor="middle">SageMaker AI · Bedrock · Q</text>
+
+        <!-- Governance (RED frame) -->
+        <rect x="200" y="226" width="365" height="70" rx="5" class="svc-box-a"/>
+        <text x="382" y="244" class="lbl" text-anchor="middle" style="fill:#FBBF24;">Catalog &amp; Governance (데이터 관리 솔루션 계층)</text>
+        <text x="382" y="262" class="lbl-sm" text-anchor="middle">SageMaker Catalog · Glue Data Catalog · Glue Data Quality</text>
+        <text x="382" y="280" class="lbl-sm" text-anchor="middle">Lake Formation · Amazon DataZone</text>
+        <rect x="195" y="221" width="375" height="80" rx="6" class="gov-frame"/>
+
+        <!-- Storage layer (Lakehouse on S3) -->
+        <rect x="180" y="320" width="400" height="60" rx="5" class="svc-box-g"/>
+        <text x="380" y="340" class="lbl" text-anchor="middle" style="fill:#34D399;">Storage · SageMaker Lakehouse</text>
+        <text x="380" y="358" class="lbl-sm" text-anchor="middle">S3 Tables (Iceberg) · Staging → Bronze → Silver → Gold</text>
+        <text x="380" y="374" class="lbl-sm" text-anchor="middle">Warehouse on RMS (Redshift Managed Storage)</text>
+
+        <!-- Control Plane annotation -->
+        <rect x="600" y="80" width="110" height="54" rx="5" fill="rgba(251,113,133,0.08)" stroke="rgba(251,113,133,0.45)" stroke-width="1"/>
+        <text x="655" y="100" class="lbl" text-anchor="middle" style="fill:#FB7185;">컨트롤 플레인</text>
+        <text x="655" y="116" class="lbl-sm" text-anchor="middle">*.sagemaker.</text>
+        <text x="655" y="130" class="lbl-sm" text-anchor="middle">on.aws (퍼블릭)</text>
+
+        <!-- Data Portal -->
+        <text x="750" y="70" class="lbl-title">Portal</text>
+        <rect x="740" y="80" width="140" height="54" rx="6" class="svc-box"/>
+        <text x="810" y="104" class="lbl" text-anchor="middle">Data Portal</text>
+        <text x="810" y="122" class="lbl-sm" text-anchor="middle">사내 데이터 포털</text>
+
+        <rect x="740" y="150" width="140" height="54" rx="6" class="svc-box"/>
+        <text x="810" y="174" class="lbl" text-anchor="middle">SageMaker Portal</text>
+        <text x="810" y="192" class="lbl-sm" text-anchor="middle">AWS 콘솔 접근</text>
+
+        <!-- Users -->
+        <text x="750" y="240" class="lbl-title">Users</text>
+        <rect x="740" y="250" width="140" height="56" rx="6" class="svc-box"/>
+        <text x="810" y="272" class="lbl" text-anchor="middle">Data Owners</text>
+        <text x="810" y="290" class="lbl-sm" text-anchor="middle">Engineers · Analysts</text>
+
+        <rect x="740" y="320" width="140" height="56" rx="6" class="svc-box"/>
+        <text x="810" y="342" class="lbl" text-anchor="middle">조회/분석 사용자</text>
+        <text x="810" y="360" class="lbl-sm" text-anchor="middle">업무/주변 시스템</text>
+
+        <!-- Arrows -->
+        <line x1="140" y1="108" x2="178" y2="135" class="arrow" marker-end="url(#arrow1)"/>
+        <line x1="140" y1="178" x2="178" y2="190" class="arrow" marker-end="url(#arrow1)"/>
+        <line x1="580" y1="350" x2="738" y2="280" class="arrow" marker-end="url(#arrow1)"/>
+        <line x1="580" y1="260" x2="738" y2="180" class="arrow" marker-end="url(#arrow1)"/>
+
+        <!-- Caption labels -->
+        <text x="20" y="430" class="lbl-sm" style="fill:#FB7185;">■ 붉은 점선: 데이터 관리 솔루션 계층 (거버넌스)</text>
+        <text x="20" y="450" class="lbl-sm" style="fill:#FBBF24;">■ SMUS는 다수 AWS 서비스를 하나의 UI로 묶은 편의 레이어 구조</text>
+      </svg>
+      <div class="arch-caption">
+        포털(콘솔) 자체는 <code>*.sagemaker.&lt;region&gt;.on.aws</code> 형태의 <strong>AWS 소유 퍼블릭 엔드포인트</strong>로 접근합니다.
+        거버넌스 계층은 SageMaker Catalog·Glue Data Catalog·Glue Data Quality·Lake Formation·DataZone을 <strong>복합 연동</strong>해 구성합니다.
+      </div>
+    </div>
+
+    <!-- ===== Architecture Diagram 2: Databricks ===== -->
+    <div class="arch">
+      <div class="arch-title">Architecture 2 · Databricks 기반 구성</div>
+      <svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Databricks 기반 데이터 플랫폼 아키텍처">
+        <defs>
+          <linearGradient id="dbxBox" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1E293B"/>
+            <stop offset="100%" stop-color="#0F172A"/>
+          </linearGradient>
+          <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#64748B"/>
+          </marker>
+        </defs>
+        <style>
+          .lbl { font: 600 12px 'Segoe UI', sans-serif; fill: #E2E8F0; }
+          .lbl-sm { font: 500 10.5px 'Segoe UI', sans-serif; fill: #94A3B8; }
+          .lbl-title { font: 700 12px 'Segoe UI', sans-serif; fill: #818CF8; letter-spacing: 0.08em; text-transform: uppercase; }
+          .lbl-section { font: 700 13px 'Segoe UI', sans-serif; fill: #F1F5F9; }
+          .svc-box2 { fill: url(#dbxBox); stroke: rgba(16,185,129,0.3); stroke-width: 1; }
+          .svc-box2-g { fill: rgba(52, 211, 153, 0.08); stroke: rgba(52, 211, 153, 0.4); stroke-width: 1; }
+          .svc-box2-gov { fill: rgba(251, 113, 133, 0.08); stroke: rgba(251, 113, 133, 0.45); stroke-width: 1; }
+          .gov-frame2 { fill: none; stroke: #FB7185; stroke-width: 2; stroke-dasharray: 6 4; }
+          .arrow2 { stroke: #64748B; stroke-width: 1.2; fill: none; }
+          .cp-frame { fill: rgba(251,113,133,0.04); stroke: rgba(251,113,133,0.55); stroke-width: 1.5; stroke-dasharray: 4 4; }
+        </style>
+
+        <!-- Databricks Control Plane (3rd-party) -->
+        <rect x="550" y="30" width="330" height="72" rx="8" class="cp-frame"/>
+        <text x="715" y="52" class="lbl" text-anchor="middle" style="fill:#FB7185;">Databricks Control Plane · 3rd-party SaaS</text>
+        <text x="715" y="70" class="lbl-sm" text-anchor="middle">사용자 인증 · 작업 제어 · 메타데이터 관리</text>
+        <text x="715" y="88" class="lbl-sm" text-anchor="middle">▲ Databricks Inc. 소유 클라우드 계정 내 운영</text>
+
+        <!-- Customer AWS account -->
+        <rect x="160" y="120" width="720" height="340" rx="10" fill="none" stroke="rgba(148,163,184,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="170" y="138" class="lbl-sm">Customer AWS Account · Seoul Region (Data Plane)</text>
+
+        <!-- Sources -->
+        <text x="20" y="150" class="lbl-title">Sources</text>
+        <rect x="20" y="160" width="120" height="56" rx="6" class="svc-box2"/>
+        <text x="80" y="184" class="lbl" text-anchor="middle">배치/실시간</text>
+        <text x="80" y="202" class="lbl-sm" text-anchor="middle">SFTP · Lakeflow</text>
+
+        <rect x="20" y="230" width="120" height="56" rx="6" class="svc-box2"/>
+        <text x="80" y="254" class="lbl" text-anchor="middle">스트리밍</text>
+        <text x="80" y="272" class="lbl-sm" text-anchor="middle">Delta Live Tables</text>
+
+        <!-- Databricks Workspace (Data Plane) -->
+        <rect x="180" y="150" width="400" height="160" rx="8" fill="rgba(16,185,129,0.04)" stroke="rgba(16,185,129,0.4)" stroke-width="1.2"/>
+        <text x="200" y="170" class="lbl-section">Databricks Workspace (Data Plane)</text>
+
+        <rect x="200" y="184" width="170" height="44" rx="5" class="svc-box2"/>
+        <text x="285" y="202" class="lbl" text-anchor="middle">Processing</text>
+        <text x="285" y="218" class="lbl-sm" text-anchor="middle">Spark · Photon · SQL</text>
+
+        <rect x="380" y="184" width="185" height="44" rx="5" class="svc-box2"/>
+        <text x="472" y="202" class="lbl" text-anchor="middle">ML &amp; Gen AI</text>
+        <text x="472" y="218" class="lbl-sm" text-anchor="middle">Mosaic AI · AI/BI Genie · Vector Search</text>
+
+        <rect x="200" y="240" width="365" height="44" rx="5" class="svc-box2"/>
+        <text x="382" y="258" class="lbl" text-anchor="middle">Notebook · Query Editor · Workflow (Jobs · Pipelines)</text>
+        <text x="382" y="275" class="lbl-sm" text-anchor="middle">→ 작업 내용이 자동으로 카탈로그/리니지에 반영</text>
+
+        <!-- Unity Catalog Governance (RED frame, single unified layer) -->
+        <rect x="180" y="320" width="400" height="80" rx="6" class="svc-box2-gov"/>
+        <text x="380" y="340" class="lbl" text-anchor="middle" style="fill:#FB7185;">Unity Catalog · 통합 거버넌스 (데이터 관리 솔루션 계층)</text>
+        <text x="380" y="358" class="lbl-sm" text-anchor="middle">Catalog · Lineage · DLT Expectations · Access Control (ABAC/Tag)</text>
+        <text x="380" y="376" class="lbl-sm" text-anchor="middle">Delta Sharing · system.access.audit · Data Profiling</text>
+        <rect x="175" y="315" width="410" height="90" rx="8" class="gov-frame2"/>
+
+        <!-- Storage -->
+        <rect x="180" y="410" width="400" height="40" rx="5" class="svc-box2-g"/>
+        <text x="380" y="434" class="lbl" text-anchor="middle" style="fill:#34D399;">Storage · Delta Lake on S3 (ACID / Snapshot)</text>
+
+        <!-- Portal -->
+        <text x="750" y="150" class="lbl-title">Portal</text>
+        <rect x="740" y="160" width="140" height="54" rx="6" class="svc-box2"/>
+        <text x="810" y="184" class="lbl" text-anchor="middle">Data Portal</text>
+        <text x="810" y="202" class="lbl-sm" text-anchor="middle">사내 데이터 포털</text>
+
+        <rect x="740" y="230" width="140" height="54" rx="6" class="svc-box2"/>
+        <text x="810" y="254" class="lbl" text-anchor="middle">Databricks Workspace UI</text>
+        <text x="810" y="272" class="lbl-sm" text-anchor="middle">(컨트롤 플레인 경유)</text>
+
+        <!-- Users -->
+        <text x="750" y="310" class="lbl-title">Users</text>
+        <rect x="740" y="320" width="140" height="56" rx="6" class="svc-box2"/>
+        <text x="810" y="342" class="lbl" text-anchor="middle">Data Owners</text>
+        <text x="810" y="360" class="lbl-sm" text-anchor="middle">Engineers · Analysts</text>
+
+        <rect x="740" y="390" width="140" height="56" rx="6" class="svc-box2"/>
+        <text x="810" y="412" class="lbl" text-anchor="middle">조회/분석 사용자</text>
+        <text x="810" y="430" class="lbl-sm" text-anchor="middle">업무/주변 시스템</text>
+
+        <!-- Arrows -->
+        <line x1="140" y1="188" x2="178" y2="205" class="arrow2" marker-end="url(#arrow2)"/>
+        <line x1="140" y1="258" x2="178" y2="260" class="arrow2" marker-end="url(#arrow2)"/>
+        <line x1="715" y1="102" x2="560" y2="150" class="arrow2" marker-end="url(#arrow2)"/>
+        <line x1="580" y1="360" x2="738" y2="350" class="arrow2" marker-end="url(#arrow2)"/>
+        <line x1="580" y1="260" x2="738" y2="255" class="arrow2" marker-end="url(#arrow2)"/>
+      </svg>
+      <div class="arch-caption">
+        Databricks는 Unity Catalog <strong>단일 계층</strong>에서 카탈로그·리니지·품질·권한·감사가 통합 관리됩니다.
+        다만 <strong>컨트롤 플레인은 Databricks Inc. 소유 클라우드 계정</strong>에 존재하는 3rd-party SaaS 구조이며,
+        고객 AWS 계정 내에서는 워크로드가 실행되는 데이터 플레인만 동작합니다.
+      </div>
+    </div>
+
+    <hr/>
+
+    <!-- ===== 2. 기능 비교 ===== -->
+    <h2>2. 핸즈온 기반 기능 비교 — 데이터 관리 솔루션 관점</h2>
+    <p>
+      PL로서 관심을 둔 지점은 "어떤 기능이 있는가"가 아니라
+      <strong>"우리가 운영할 때, 이 기능이 추가 구축·관리 부담 없이 당장 쓸 수 있는 수준인가"</strong>
+      였습니다.
+    </p>
+
+    <h3>2.1 데이터 카탈로그 &amp; 메타데이터 — 통합 관리 계층의 유무</h3>
+    <ul>
+      <li><strong>Databricks</strong>: Unity Catalog 하나로 카탈로그·메타데이터·권한·리니지가 <strong>일관된 단일 계층</strong>에서 관리됩니다. S3 등 외부 소스와 이기종 DB도 Unity Catalog 아래로 편입시켜 한 번에 탐색할 수 있었습니다.</li>
+      <li><strong>SageMaker Unified Studio</strong>: Glue Data Catalog, S3, Redshift, DataZone을 <strong>각각 연동해 복합적으로 운영</strong>해야 하며, Unity Catalog와 같은 "단일 관리 계층"이 존재하지 않습니다. 도메인 단위 메뉴와 프로젝트 단위 메뉴의 위치·구조가 UI 상 직관적으로 구분되지 않아, 같은 기능을 어디서 접근해야 하는지 <strong>조작 동선부터 학습 비용</strong>이 발생했습니다.</li>
+    </ul>
+    <div class="callout opinion">
+      <strong>평가의견</strong> · 데이터 관리 솔루션이 지향해야 할 "단일 진실 원천(single source of truth)"에
+      가장 가까운 것은 Unity Catalog였습니다. SageMaker Unified Studio는 결국 여러 AWS 서비스를 하나의 UI로
+      묶어둔 <strong>"통합 화면"</strong>에 가까웠고, 내부의 자산·권한 모델 자체가 통합되어 있지는 않았습니다.
+    </div>
+
+    <h3>2.2 데이터 리니지 — "자동 캡처"가 실제로 되는가</h3>
+    <ul>
+      <li><strong>Databricks</strong>: Query Editor·Notebook에서 발생한 작업이 <strong>Unity Catalog와 연동되어 자동 리니지</strong>로 반영됩니다. Delta Lake 스냅샷 기반으로 이력과 흐름을 한눈에 볼 수 있고, External Lineage(Public Preview)로 외부 시스템 연계까지 확장 가능합니다.</li>
+      <li><strong>SageMaker Unified Studio</strong>: 자산 게시·구독 과정의 자동 리니지, Glue Crawler/Visual ETL 리니지는 편리하지만, <strong>Athena CTAS, JupyterLab 작업, 외부 ETL 도구에 대한 자동 리니지가 지원되지 않습니다</strong>. 해당 구간은 OpenLineage API로 수동 생성해야 합니다.</li>
+    </ul>
+    <div class="callout opinion">
+      <strong>평가의견</strong> · 데이터 관리 솔루션에서 리니지는 "있느냐"보다
+      <strong>"분석가가 평소 쓰는 도구에서 발생한 변경이 자동으로 잡히느냐"</strong>가 본질입니다.
+      CTAS와 노트북은 현업에서 매우 빈번히 쓰이는데, 이 구간을 수동으로 메워야 한다면 사실상 리니지
+      신뢰성을 보장할 수 없습니다.
+    </div>
+
+    <h3>2.3 데이터 품질 — 플랫폼이 직접 통제하느냐, 결과만 확인하느냐</h3>
+    <ul>
+      <li><strong>Databricks</strong>: Expectations(DLT)·Data Profiling·Lakehouse Monitoring이 <strong>플랫폼 내부에 내장</strong>되어 있습니다. 품질 기준을 통과한 데이터만 정상 처리하고, 미달 데이터는 <strong>격리 후 재적재</strong>까지 파이프라인 안에서 제어할 수 있습니다.</li>
+      <li><strong>SageMaker Unified Studio</strong>: 자체 품질 기능은 없고, <strong>외부 서비스인 AWS Glue Data Quality</strong>에서 DQDL 규칙을 설정한 뒤, SageMaker Unified Studio는 결과 메트릭만 시각화하여 연계합니다.</li>
+    </ul>
+    <div class="callout opinion">
+      <strong>평가의견</strong> · "품질 기준을 플랫폼이 강제하느냐"와 "결과를 플랫폼이 보여주느냐"는 전혀 다른 얘기입니다.
+      전자는 파이프라인 중단/재처리를 자연스럽게 설계할 수 있지만, 후자는 운영 단에서
+      <strong>별도의 후속 워크플로우</strong>를 구축해야 합니다.
+    </div>
+
+    <h3>2.4 권한/보안 — 컬럼 마스킹과 ABAC</h3>
+    <ul>
+      <li><strong>Databricks</strong>: Unity Catalog를 축으로 <strong>Row-Level Security, ABAC, Tag Policy 기반 컬럼 마스킹</strong>이 일관된 모델로 동작합니다. 금융 도메인 결합 데이터에서 가장 민감한 <strong>컬럼 단위 마스킹</strong>이 자연스럽게 지원됩니다.</li>
+      <li><strong>SageMaker Unified Studio</strong>: 자체 컬럼 마스킹 기능은 없고, Redshift Dynamic Masking 또는 Lake Formation 조합으로 <strong>우회 구현</strong>해야 합니다. 권한 모델 자체도 RBAC/ABAC보다는 <strong>"구독 승인 + 접근 조건 필터"</strong>에 가깝고, 스키마·테이블·컬럼 기준의 세밀한 권한 부여는 부자연스럽습니다.</li>
+    </ul>
+    <div class="callout opinion">
+      <strong>평가의견</strong> · 금융권 결합 데이터 환경에서는 <strong>컬럼 마스킹이 기능이 아니라 전제 조건</strong>입니다.
+      우회 구현이 가능하다 해도, 그 책임이 플랫폼 바깥으로 떨어지는 순간 운영 조직의 거버넌스 부담이 급증합니다.
+    </div>
+
+    <h3>2.5 감사로깅 — 파이프라인을 새로 만들어야 하는가</h3>
+    <ul>
+      <li><strong>Databricks</strong>: <code>system.access.audit</code> 시스템 테이블에 <strong>자동 적재</strong>됩니다. 별도 파이프라인 없이 SQL로 바로 조회 가능합니다.</li>
+      <li><strong>SageMaker Unified Studio</strong>: CloudTrail·CloudWatch Logs에 적재되며, 조회 가능한 형태로 가공하려면 <strong>감사로깅 수집·변환·저장 파이프라인을 별도 구축</strong>해야 합니다.</li>
+    </ul>
+    <div class="callout opinion">
+      <strong>평가의견</strong> · 규제 대응 관점에서 감사로깅은 "기본 탑재"여야 합니다.
+      SageMaker Unified Studio는 IAM Identity Center 기반 사용자 단위 추적이 세분화되어 있다는 장점은 있으나,
+      <strong>조회 가능한 로그로 만들기까지의 엔지니어링 비용</strong>이 Databricks 대비 확실히 큽니다.
+    </div>
+
+    <h3>2.6 검색·API·외부 연계</h3>
+    <ul>
+      <li><strong>검색</strong>: Databricks는 워크스페이스 전체 자산을 아우르는 통합 검색이 강력합니다. 다만 검색 API 미지원이 확인되어, <strong>사내 포털에 임베딩해서 써야 하는 시나리오에서는 제약</strong>이 있었습니다. SageMaker Unified Studio는 Asset 검색 API는 있으나 카탈로그 UI 자체의 임베딩이 불가하고, 메뉴 구조가 직관적이지 않았습니다.</li>
+      <li><strong>노트북 API</strong>: Databricks는 REST API 제공. SageMaker Unified Studio는 JupyterLab API 미지원 → 분석 환경에서 구독 승인 데이터를 쓰려면 <strong>별도 UI/접근 방식 설계</strong> 필요.</li>
+      <li><strong>대시보드 임베딩</strong>: 양쪽 모두 임베딩 URL 제공. Databricks는 툴바 표시 여부 등 <strong>옵션 제어의 세밀도가 높습니다</strong>.</li>
+    </ul>
+
+    <h3>2.7 기능 비교 요약</h3>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:28%;">항목</th>
+          <th style="width:36%;">Databricks</th>
+          <th style="width:36%;">SageMaker Unified Studio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>카탈로그 통합 관리</td>
+          <td><span class="mark-good">◎</span> Unity Catalog 단일 계층</td>
+          <td><span class="mark-warn">△</span> Glue/S3/Redshift/DataZone 복합 연동</td>
+        </tr>
+        <tr>
+          <td>자동 리니지</td>
+          <td><span class="mark-good">◎</span> Query Editor·Notebook까지 자동</td>
+          <td><span class="mark-warn">△</span> CTAS/JupyterLab/외부 ETL 미지원</td>
+        </tr>
+        <tr>
+          <td>데이터 품질 제어</td>
+          <td><span class="mark-good">◎</span> Expectations 내장, 격리·재적재</td>
+          <td><span class="mark-warn">△</span> Glue Data Quality 외부 연계, 결과만 확인</td>
+        </tr>
+        <tr>
+          <td>컬럼 마스킹</td>
+          <td><span class="mark-good">◎</span> ABAC/Tag Policy 네이티브</td>
+          <td><span class="mark-bad">✗</span> Redshift/Lake Formation 우회</td>
+        </tr>
+        <tr>
+          <td>감사로깅</td>
+          <td><span class="mark-good">◎</span> 시스템 테이블 자동 적재</td>
+          <td><span class="mark-warn">△</span> CloudTrail 파이프라인 별도 구축</td>
+        </tr>
+        <tr>
+          <td>비즈니스 메타 (Glossary)</td>
+          <td><span class="mark-bad">✗</span> 미지원</td>
+          <td><span class="mark-ok">○</span> 용어사전/분류체계 지원</td>
+        </tr>
+        <tr>
+          <td>컨트롤 플레인 위치</td>
+          <td><span class="mark-warn">△</span> Databricks 소유 계정 (3rd-party SaaS)</td>
+          <td><span class="mark-ok">○</span> AWS 매니지드 (퍼블릭 엔드포인트)</td>
+        </tr>
+        <tr>
+          <td>고객 레퍼런스·안정성</td>
+          <td><span class="mark-good">◎</span> 성숙</td>
+          <td><span class="mark-warn">△</span> 2025년 3월 GA, 업데이트 빈번</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="legend">
+      범례: <span class="mark-good">◎</span> 바로 운영 가능 ·
+      <span class="mark-ok">○</span> 지원하나 제약 ·
+      <span class="mark-warn">△</span> 우회 구성 필요 ·
+      <span class="mark-bad">✗</span> 미지원
+    </p>
+
+    <hr/>
+
+    <!-- ===== 3. 보안 검토 ===== -->
+    <h2>3. 왜 보안 검토가 확장되었는가 — 컨트롤 플레인 이슈</h2>
+    <p>
+      Databricks의 기능 우위는 명확했음에도 불구하고, 금융권 도메인이 결합되는 데이터 특성상 검토 범위는
+      단순 기능 비교를 넘어섰습니다. 여기서 중요한 것은
+      <strong>"컨트롤 플레인이 어느 벤더의 운영 영역에 속하느냐"</strong>입니다.
+      엄밀히 말하면 SageMaker Unified Studio 역시 포털 콘솔은 <code>*.sagemaker.&lt;region&gt;.on.aws</code>
+      형태의 <strong>AWS 소유 퍼블릭 엔드포인트</strong>로 접근하는 매니지드 서비스이며,
+      고객 VPC 내부에서 돌아가는 것이 아닙니다. 다만 그 운영 주체가
+      <strong>이미 CSP 계약이 체결된 AWS</strong>인지, <strong>별도의 3rd-party 벤더인 Databricks</strong>인지에
+      따라 금융권 관점의 리스크가 달라집니다.
+    </p>
+    <ul>
+      <li><strong>컨트롤 플레인의 운영 주체</strong>: Databricks는 사용자 인증·작업 제어·메타데이터 관리가 Databricks Inc.의 클라우드 계정 내에서 이루어지는 <strong>3rd-party SaaS</strong> 구조입니다. 고객사 입장에서는 기존 CSP(AWS) 외에 새로운 벤더를 신뢰 체인에 추가해야 하고, 이는 <strong>위탁평가·계약상 책임 범위</strong>의 확장을 의미합니다. 반면 SageMaker Unified Studio는 AWS가 동일한 CSP 계약 범위 내에서 운영하는 매니지드 서비스이므로, 별도 벤더 실사 없이 <strong>기존 AWS CSP 적합성 평가 결과를 재사용</strong>할 여지가 큽니다.</li>
+      <li><strong>정보보안 검토 확장</strong>: Databricks의 경우 CSP 안정성 평가, 혁신금융서비스 지정 조건(A·B 항목) 충족 여부, 금융보안원 AI 서비스 적합성 확인 등 <strong>평가 항목이 기능 검토보다 훨씬 길어지는</strong> 상황이었습니다.</li>
+      <li><strong>망 분리·접근 통제</strong>: SageMaker Unified Studio 포털 자체는 퍼블릭 접근이 필요하지만 Private Link 제공이 되고, SageMaker Unified Studio가 사용하는 리소스(Glue, Redshift, S3 등)는 <strong>고객 AWS 계정 내에서 VPC/Subnet 단위로 격리</strong>할 수 있습니다. Databricks 역시 Private Link 구성이 가능하지만, 이는 Databricks 계정과 고객 계정 간의 별도 네트워크 설계·계약상 합의를 수반합니다.</li>
+    </ul>
+    <p>
+      즉, 이 프로젝트에서 Databricks의 기술적 장점이 모두 유효하더라도,
+      <strong>"금융권 도메인 + 신규 3rd-party 벤더 추가"</strong>라는 조합은 보안 조직과
+      수개월 단위의 협의가 필요한 별개의 트랙이었습니다.
+    </p>
+
+    <hr/>
+
+    <!-- ===== 4. 결론 ===== -->
+    <h2>4. 결론과 내부 공유 — "기술은 Databricks, 보안은 별도 트랙"</h2>
+    <p>두 플랫폼을 핸즈온 검토한 뒤 내부에 공유한 결론은 다음과 같았습니다.</p>
+    <ol>
+      <li>
+        <strong>데이터 관리 솔루션으로서의 기능 완성도는 Databricks가 명확히 앞선다.</strong>
+        <ul>
+          <li>Unity Catalog를 중심으로 카탈로그·리니지·품질·권한·마스킹·감사로깅이 <strong>일관된 단일 거버넌스 모델</strong>로 제공됩니다.</li>
+          <li>SageMaker Unified Studio는 여러 AWS 서비스를 조합해야 하고, 마스킹/감사로깅/리니지 자동화 등 핵심 기능에 <strong>우회 구현 또는 추가 개발</strong>이 필요합니다.</li>
+        </ul>
+      </li>
+      <li>
+        <strong>SageMaker Unified Studio는 "AWS Native를 하나의 화면으로 묶은 편의 레이어"에 가깝다.</strong>
+        <ul>
+          <li>도메인/프로젝트 모델로 조직 구조에 맞춘 격리가 편리하고, 포털 자체는 AWS 매니지드 퍼블릭 엔드포인트로 제공되지만 <strong>기존 AWS CSP 계약 범위 내에서 운영</strong>되므로 보안 검토 관점에서 신규 벤더 실사를 수반하지 않는다는 점이 장점입니다.</li>
+          <li>다만 2025년 3월 GA로 제품 성숙도와 레퍼런스가 제한적이며, UI 직관성·트러블슈팅 용이성 측면에서 <strong>초기 운영 부담</strong>이 적지 않았습니다.</li>
+        </ul>
+      </li>
+      <li>
+        <strong>실제 채택 결정은 기술 점수만으로 되지 않는다.</strong>
+        <ul>
+          <li>"Databricks가 더 적합하다"는 기술 결론은 명확했으나, <strong>컨트롤 플레인이 3rd-party 벤더(Databricks Inc.) 계정에서 운영된다는 구조 자체</strong>가 금융권 규제 프레임 안에서는 보안 조직과의 긴 협의를 요구했습니다.</li>
+          <li>PL 관점에서는 <strong>"기능 판정"과 "채택 결정"을 분리해서 공유</strong>하는 것이 합리적이라 판단했습니다. 기술 검토 결과는 결과대로 공유하되, 보안·컴플라이언스 트랙은 별도의 의사결정 라인을 태웠습니다.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>PL로서 얻은 실무 교훈</h3>
+    <ul>
+      <li><strong>도입 타당성 검토는 "기능 표"가 아니라 "운영 시나리오"로 해야 합니다.</strong> 리니지가 지원되느냐가 아니라, 분석가가 실제로 쓰는 도구(Query Editor, JupyterLab)에서의 변경이 자동으로 잡히느냐가 본질입니다.</li>
+      <li><strong>금융 도메인에서는 "컨트롤 플레인이 어느 벤더의 운영 영역에 속하는가"가 플랫폼 선택의 1급 변수</strong>가 됩니다. 두 플랫폼 모두 포털은 퍼블릭 엔드포인트로 제공되지만, 그 운영 주체가 기존 CSP 계약 범위 안에 있는지 아닌지가 위탁평가 부담을 결정합니다. 멀티클라우드 장점은 일반 산업에서는 매력이지만, 이 업권에서는 신뢰 체인에 새 벤더를 추가하는 비용으로 작동합니다.</li>
+      <li><strong>핸즈온 없이 벤더 자료로 판정하지 않도록</strong> 두 플랫폼 모두 실제 POC를 태웠고, 이것이 내부 공유 시 설득력을 크게 높여 주었습니다. 특히 SageMaker Unified Studio의 "자동 리니지 지원"이 실제로는 JupyterLab/CTAS에서 동작하지 않는다는 점은 POC 없이는 확인하기 어려운 항목이었습니다.</li>
+      <li><strong>"결론 한 줄 + 비교표 한 장"을 같은 페이지에 함께 보여주세요.</strong> "Databricks가 더 적합합니다"라는 한 줄 메시지 바로 아래에, 기능별로 어디서 얼마나 차이가 나는지 정리한 비교표를 붙여두면 됩니다. 그래야 보고를 받는 사람이 왜 그런 결론이 나왔는지 스스로 납득할 수 있고, 같은 논의를 다시 반복하지 않아도 됩니다.</li>
+    </ul>
+
+    <hr/>
+
+    <!-- ===== 5. 맺음말 ===== -->
+    <h2>5. 맺음말</h2>
+    <p>
+      이번 검토는 단순히 "어떤 제품이 더 좋은가"를 고르는 작업이 아니었습니다.
+      데이터 관리 솔루션을 <strong>누가·어디서·어떻게 운영할 것인지</strong>, 그리고
+      <strong>금융 도메인이 결합되는 환경에서 컨트롤 플레인이라는 추상적 개념이 얼마나 구체적인 리스크로 전환되는지</strong>를
+      팀과 함께 확인해 가는 과정이었습니다.
+    </p>
+    <p>
+      두 플랫폼 중 어느 쪽을 최종 채택하든,
+      <strong>"우리 조직이 감당할 수 있는 거버넌스 부담의 총량"</strong>이 기준이 되어야 한다는 점이
+      이번 검토의 가장 큰 수확이었습니다. 기술 우위가 명확해도 보안·컴플라이언스 리스크가 운영 조직의 역량을
+      초과한다면 채택할 수 없고, 반대로 보안 적합성이 높아도 기능 공백을 우회 구현으로 메우는 비용이
+      장기적으로 조직을 소모시킨다면 그 역시 현명한 선택이 아닙니다.
+    </p>
+    <p>
+      이 글이 비슷한 지점을 고민하는 데이터 플랫폼 담당자·PL분들께 한 조각의 참고가 되기를 바랍니다.
+    </p>
+
+    <div class="footer-note">
+      ※ 본문의 아키텍처 다이어그램은 사내 POC 자료의 구성 방식을 공개 가능한 수준으로 재구성한 것입니다.
+      실제 계열사 구성 및 고객 정보는 포함되어 있지 않습니다.
+    </div>
+  </div>
+</body>
+</html>
