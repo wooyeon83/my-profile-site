@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>채용 데이터 분석 — 폐쇄망에서 H2O AutoML로 풀어낸 조직 적합도 예측 | 최우연</title>
+  <meta name="description" content="국내 대형 금융사의 채용 데이터를 폐쇄망 환경에서 H2O AutoML로 분석한 회고. 데이터 한계(시스템 마이그레이션 부재·코로나 채용 공백·면접 주관성)를 정직하게 인정하면서, 사회과학 예측 모델의 적정 성능 기준 위에서 인사팀에 실질적 인사이트를 제공한 과정." />
+  <meta name="author" content="최우연 (Wooyeon Choi)" />
+  <style>
+    :root {
+      --bg: #0F172A;
+      --bg-soft: #1E293B;
+      --bg-code: #0B1220;
+      --line: rgba(148, 163, 184, 0.15);
+      --text: #E2E8F0;
+      --text-soft: #94A3B8;
+      --text-muted: #64748B;
+      --indigo: #818CF8;
+      --indigo-strong: #6366F1;
+      --violet: #A78BFA;
+      --blue: #60A5FA;
+      --emerald: #34D399;
+      --amber: #FBBF24;
+      --rose: #FB7185;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      line-height: 1.8;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 64px 24px 96px; }
+    .back {
+      display: inline-block; margin-bottom: 32px; color: var(--text-soft);
+      text-decoration: none; font-size: 14px; border-bottom: 1px dashed transparent;
+      transition: color .2s, border-color .2s;
+    }
+    .back:hover { color: var(--indigo); border-color: var(--indigo); }
+    h1 {
+      font-size: 30px; line-height: 1.35; letter-spacing: -0.01em;
+      margin: 0 0 20px; color: #F8FAFC; font-weight: 700;
+    }
+    .meta {
+      display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center;
+      color: var(--text-muted); font-size: 13px; margin: 0 0 12px;
+    }
+    .meta .dot { width: 3px; height: 3px; background: var(--text-muted); border-radius: 50%; display: inline-block; }
+    .tags { margin: 0 0 40px; }
+    .tag {
+      display: inline-block; font-size: 12px; padding: 4px 10px; margin-right: 6px; margin-top: 6px;
+      border-radius: 999px; background: rgba(99, 102, 241, 0.12); color: var(--indigo);
+      border: 1px solid rgba(99, 102, 241, 0.25); letter-spacing: 0.02em;
+    }
+    h2 {
+      font-size: 22px; line-height: 1.4; margin: 56px 0 18px; color: #F1F5F9;
+      font-weight: 700; letter-spacing: -0.005em;
+      padding-bottom: 10px; border-bottom: 1px solid var(--line);
+    }
+    h3 {
+      font-size: 17px; margin: 32px 0 12px; color: var(--indigo);
+      font-weight: 600; letter-spacing: 0;
+    }
+    p { margin: 14px 0; color: var(--text); }
+    strong { color: #F8FAFC; font-weight: 600; }
+    em { color: var(--violet); font-style: normal; }
+    ul, ol { padding-left: 22px; margin: 14px 0; }
+    li { margin: 6px 0; }
+    a { color: var(--blue); }
+    code {
+      font-family: "JetBrains Mono", "Fira Code", Consolas, Menlo, monospace;
+      font-size: 0.92em;
+      color: var(--emerald);
+      background: rgba(52, 211, 153, 0.08);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+    pre {
+      background: var(--bg-code);
+      border: 1px solid var(--line);
+      padding: 16px 18px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 13.5px;
+      line-height: 1.65;
+      margin: 18px 0;
+    }
+    pre code {
+      background: transparent; padding: 0; color: var(--text-soft);
+    }
+    .callout {
+      border-left: 3px solid var(--indigo-strong);
+      background: rgba(99, 102, 241, 0.06);
+      padding: 14px 18px; margin: 22px 0; border-radius: 0 6px 6px 0;
+      color: var(--text-soft); font-size: 14.5px;
+    }
+    .callout strong { color: var(--indigo); }
+    .callout.opinion {
+      border-left-color: var(--violet);
+      background: rgba(167, 139, 250, 0.06);
+    }
+    .callout.opinion strong { color: var(--violet); }
+    .callout.warn {
+      border-left-color: var(--amber);
+      background: rgba(251, 191, 36, 0.06);
+    }
+    .callout.warn strong { color: var(--amber); }
+    .callout.cite {
+      border-left-color: var(--emerald);
+      background: rgba(52, 211, 153, 0.05);
+      font-size: 14px;
+    }
+    .callout.cite strong { color: var(--emerald); }
+    .tldr {
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      background: rgba(99, 102, 241, 0.04);
+      padding: 18px 22px;
+      border-radius: 10px;
+      margin: 24px 0 32px;
+    }
+    .tldr h3 { margin-top: 0; color: var(--indigo); }
+    .tldr ul { margin: 8px 0 0; padding-left: 20px; }
+    .tldr li { color: var(--text-soft); font-size: 14.5px; }
+
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--indigo); font-weight: 600; background: rgba(99, 102, 241, 0.05); }
+    td { color: var(--text); }
+    .legend {
+      margin-top: 8px; font-size: 12.5px; color: var(--text-muted);
+      letter-spacing: 0.01em;
+    }
+    .mark-good { color: var(--emerald); font-weight: 600; }
+    .mark-ok   { color: var(--blue); font-weight: 600; }
+    .mark-warn { color: var(--amber); font-weight: 600; }
+    .mark-bad  { color: var(--rose); font-weight: 600; }
+
+    .arch {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px;
+      margin: 22px 0;
+      background: rgba(30, 41, 59, 0.5);
+      overflow-x: auto;
+    }
+    .arch-title {
+      font-size: 13px; font-weight: 600; color: var(--indigo);
+      letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .arch-caption {
+      font-size: 12.5px; color: var(--text-muted); margin-top: 10px; line-height: 1.6;
+    }
+    .arch svg { width: 100%; height: auto; display: block; }
+
+    .refs {
+      margin-top: 28px; padding: 18px 22px;
+      border: 1px solid var(--line); border-radius: 10px;
+      background: rgba(15, 23, 42, 0.6);
+      font-size: 13.5px;
+    }
+    .refs h4 { margin: 0 0 10px; color: var(--indigo); font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; }
+    .refs ol { padding-left: 20px; margin: 0; }
+    .refs li { color: var(--text-soft); margin: 6px 0; }
+    .refs a { color: var(--blue); word-break: break-all; }
+
+    hr { border: none; border-top: 1px solid var(--line); margin: 48px 0; }
+    .footer-note {
+      margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line);
+      color: var(--text-muted); font-size: 13px;
+    }
+    @media (max-width: 640px) {
+      h1 { font-size: 24px; }
+      h2 { font-size: 19px; }
+      .wrap { padding: 48px 18px 72px; }
+      table { font-size: 13px; }
+      th, td { padding: 8px 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="index.html">&larr; 포트폴리오로 돌아가기</a>
+
+    <h1>채용 데이터 분석 — 폐쇄망에서 H2O AutoML로 풀어낸 "조직 적합도 예측" 그리고 사회과학 예측 모델의 적정 성능 기준</h1>
+
+    <div class="meta">
+      <span>2026-05-02</span>
+      <span class="dot"></span>
+      <span>최우연 · Data Engineer / 분석 PM</span>
+      <span class="dot"></span>
+      <span>국내 대형 금융사 인사 데이터 분석 프로젝트 회고</span>
+    </div>
+    <div class="tags">
+      <span class="tag">H2O AutoML</span>
+      <span class="tag">GBM</span>
+      <span class="tag">Permutation Importance</span>
+      <span class="tag">HR Analytics</span>
+      <span class="tag">Selection Validity</span>
+      <span class="tag">폐쇄망 PoC</span>
+    </div>
+
+    <!-- ===== TL;DR ===== -->
+    <div class="tldr">
+      <h3>한눈에 보기 (핵심 요약)</h3>
+      <ul>
+        <li>국내 대형 금융사 인사 부서의 <strong>"채용 시점 정보로 입사 후 조직 적합도(=Best-Fit)를 예측할 수 있는가"</strong> 라는 질문에서 시작한 분석 프로젝트입니다.</li>
+        <li>금융권 폐쇄망 환경에서 외부 패키지 자유 설치가 불가능했고, 단일 패키지로 다수 알고리즘을 한 번에 비교할 수 있는 <strong>H2O AutoML</strong>을 채택했습니다.</li>
+        <li>모델링 결과는 <strong>AUC-ROC 0.67~0.77 / F1 0.58~0.65 수준</strong>이었습니다. 의료 진단처럼 "0.9 이상이어야 쓸모 있는" 영역과는 기준 자체가 다른, <strong>채용·사회과학 예측 모델의 일반적 가용 구간</strong>에 해당합니다 (Schmidt &amp; Hunter, 1998 메타분석에서 채용 도구의 평균 validity coefficient는 .31~.51 수준).</li>
+        <li>오히려 분석의 가치는 모델 점수가 아니라, <strong>Permutation Importance로 도출한 "채용 전형 단계별 신호 강도"</strong>에 있었습니다. 데이터 한계를 정직하게 명시한 채, 인사팀이 다음 채용 사이클의 평가 가중치 조정에 곧바로 활용할 수 있는 형태로 산출물을 정리했습니다.</li>
+      </ul>
+    </div>
+
+    <!-- ===== 1. 배경 ===== -->
+    <h2>1. 배경 — "좋은 채용"을 데이터로 정의하는 일</h2>
+    <p>
+      이 프로젝트의 발단은 인사 부서의 한 가지 질문이었습니다.
+      <strong>"채용 시점에 우리가 보고 있는 지원자 정보만으로, 입사 후 조직 적합도가 높은 사람을 어느 정도 가려낼 수 있을까?"</strong>
+      추상적인 "성공적인 채용"이라는 개념을 측정 가능한 라벨로 변환하고, 채용 전 단계의 데이터로 그 라벨을 예측해 보는 일이었습니다.
+    </p>
+    <p>
+      먼저 한 일은 라벨 정의였습니다. 인사팀과 함께
+      성과 평가(상하반기 성과평가, 연간 역량평가), 포상·승진 이력, 조직 융화도를 측정하기 위한
+      교육 참여 횟수·자격증 취득 수·신입과정 점수를 가중합한
+      <strong>"Best-Fit 지수"</strong>를 정의하고, 산출 점수 <strong>상위 30%</strong>를 Best-Fit 상위자(=조직 적합도가 높은 인재)로 라벨링했습니다.
+    </p>
+
+    <div class="callout">
+      <strong>중간보고 → 최종보고 사이의 큰 의사결정 하나</strong><br/>
+      Best-Fit를 평가하는 기간을 <em>입사 후 3년 → 1년</em>으로 변경했습니다. 비교 결과
+      "1년" 시점이 채용 전 지원자 속성과의 연관성이 가장 또렷하게 잡혔고,
+      이는 곧 <strong>채용 시점의 평가 역량으로 인한 성과 창출은 입사 후 1년 내에 가장 강하게 발현된다</strong>는 가설을
+      데이터로 확인한 셈이었습니다.
+    </div>
+
+    <hr/>
+
+    <!-- ===== 2. 데이터의 한계 ===== -->
+    <h2>2. 먼저 이야기해야 할 것 — 데이터의 구조적 한계</h2>
+    <p>
+      모델링 결과를 공유하기 전에, 이번 분석의 데이터가 <strong>어떤 조건에서 만들어진 것인지</strong>를 먼저 짚는 것이 정직하다고 판단했습니다.
+      성능 점수의 절대값은 데이터 자체의 신호 강도에 의해 상한이 결정됩니다.
+      이번 데이터는 다음 네 가지 한계 때문에, 처음부터 "분리 가능성(separability)이 높지 않은" 상태였습니다.
+    </p>
+
+    <h3>① 채용 시스템 교체 시점이 짧고, 레거시가 마이그레이션되지 않았다</h3>
+    <p>
+      현 채용 시스템은 도입된 지 5년 정도밖에 되지 않았고, 그 이전 시스템에 쌓여 있던 합격자/평가 데이터는 신시스템으로 마이그레이션되지 않았습니다.
+      즉, 분석 가능한 누적 기간이 처음부터 5년으로 잘려 있었고, 그 안에서 다시 "입사 후 1년의 평가 결과까지 관측 가능한 코호트"만 골라야 했습니다.
+      현실적인 학습 표본은 직군별로 적게는 100여 명 단위까지 줄어들었습니다.
+    </p>
+
+    <h3>② 코로나 시기, 신입 공채가 1년간 진행되지 않았다</h3>
+    <p>
+      가뜩이나 짧은 5년의 누적 기간 안에 <strong>코로나로 인해 신입 공채가 1년 진행되지 않은 공백</strong>이 끼어 있었습니다.
+      이 한 해의 결손은 단순한 표본 감소가 아니라, <em>그 해에 형성됐어야 할 노동시장 공급 풀의 정상치</em>가 데이터에서 빠진다는 의미입니다.
+      특정 시점의 시장 환경이 학습 데이터에 반영되지 않은 채 모델이 학습되는 셈이라, 시간 대표성이 약해집니다.
+    </p>
+
+    <h3>③ 경력직은 채용 사이클이 자주 일어나지 않는다</h3>
+    <p>
+      신입 공채와 달리 경력직 채용은 <strong>이벤트성</strong>으로 일어나, 연도별 채용 직군/규모가 들쭉날쭉합니다.
+      어느 해에는 디지털 직군에 대거 편중되고, 어느 해에는 영업 채널이 다수가 되는 식이었습니다.
+      직군 분포가 시기마다 다르다는 것은, 모델이 "직군"의 영향과 "시점"의 영향을 분리하기 어렵다는 의미입니다.
+    </p>
+
+    <h3>④ 면접 평가에는 평가자 주관이 들어간다</h3>
+    <p>
+      면접 점수는 본질적으로 <strong>평가자 간 분산(inter-rater variance)</strong>이 큰 변수입니다.
+      구조화 면접을 도입해도 완전히 제거되지 않으며, 이번 데이터에서도 면접 점수 분포가 합격/불합격을 가르는 컷오프로는 의미 있었지만,
+      <strong>"합격자 안에서 누가 더 적합한가"를 가리는 상위 30% 판별</strong>에는 분포 자체가 좁아 변별력이 충분하지 않았습니다.
+    </p>
+
+    <div class="callout warn">
+      <strong>이 네 가지가 모이면 어떤 일이 벌어지는가</strong><br/>
+      누적 짧음(5년) × 시간 결손(코로나 1년) × 직군별 표본 적음(특히 경력직) × 입력 변수 자체의 노이즈(면접 주관성).
+      그 결과 데이터의 <em>신호 대 잡음비(SNR)가 본질적으로 낮은 상태</em>에서 모델링이 시작되었고,
+      AUC-ROC 0.67~0.77이라는 점수는 <strong>이 데이터 위에서 합리적으로 도달 가능한 상한 근처</strong>였다는 것이 PL로서의 솔직한 평가입니다.
+    </div>
+
+    <hr/>
+
+    <!-- ===== 3. 사회과학 예측 모델의 적정 성능 기준 ===== -->
+    <h2>3. 그래서 이 점수는 "쓸 만한가" — 사회과학 예측 모델의 적정 성능 기준</h2>
+    <p>
+      낮아 보이는 점수를 정당화하는 글로 읽히지 않기를 바라며, 학술 문헌이 이 영역의 성능을 어떤 기준으로 보아야 한다고 말하는지를 정리합니다.
+      결론부터 말하면, <strong>채용·인사 같은 사회과학 예측에서는 의료 진단 수준의 AUC를 요구하지 않으며, 도리어 0.65~0.80 구간이 학술적으로 가장 흔하게 보고되는 가용 구간</strong>입니다.
+    </p>
+
+    <h3>(가) Hosmer &amp; Lemeshow의 AUC 해석 기준 — "0.7 이상은 acceptable"</h3>
+    <div class="callout cite">
+      <strong>Hosmer, D. W., Lemeshow, S., &amp; Sturdivant, R. X. (2013). <em>Applied Logistic Regression</em> (3rd ed.).</strong><br/>
+      AUC 해석의 표준 레퍼런스. <em>0.5 = 변별력 없음 / 0.7~0.8 = acceptable / 0.8~0.9 = excellent / 0.9 이상 = outstanding</em>으로 제시.
+      이 기준은 <strong>도메인 무관 일반 가이드</strong>로, 산업별로 요구 수준은 달라집니다 (의료 진단은 0.9 이상을 기대, 마케팅·HR은 0.6~0.8 구간도 의사결정 자산으로 활용).
+    </div>
+    <p>
+      이번 모델의 직군별 AUC는 <strong>0.67 (신입 사무직) ~ 0.77 (신입 일반직)</strong>으로,
+      Hosmer &amp; Lemeshow 기준에서 "acceptable"의 하단~중간 구간입니다.
+      절대값만 보면 박해 보이지만, <em>이 점수가 도메인 평균 위에 있는지 아래에 있는지</em>를 함께 봐야 평가가 가능합니다. 이 부분이 다음 (나)의 논점입니다.
+    </p>
+
+    <h3>(나) Schmidt &amp; Hunter (1998)의 채용 도구 메타분석 — "이 도메인의 ceiling이 원래 이 정도"</h3>
+    <div class="callout cite">
+      <strong>Schmidt, F. L., &amp; Hunter, J. E. (1998). <em>The Validity and Utility of Selection Methods in Personnel Psychology: Practical and Theoretical Implications of 85 Years of Research Findings.</em> Psychological Bulletin, 124(2), 262–274.</strong><br/>
+      85년치 채용·선발 연구의 메타분석. <strong>각 채용 도구의 평균 validity coefficient(예측 타당도, 상관계수 r)</strong>는:
+      <em>구조화 면접 .51 / 비구조화 면접 .38 / 일반정신능력검사(GMA) .51 / 직무표본검사 .54 / 성실성 검사 .41 / 학점(GPA) .34 / 경력연수 .18</em>.
+      "두뇌가 좋은 사람"을 가리는 가장 강한 단일 도구도 r ≈ 0.51, 즉 결정계수 약 26%에 머무릅니다.
+    </div>
+    <p>
+      validity coefficient r과 AUC는 직접 변환되지는 않지만, 이항 분류 맥락에서
+      <strong>r ≈ 0.3 → AUC ≈ 0.66 / r ≈ 0.5 → AUC ≈ 0.76</strong> 정도의 대응이 일반적으로 인용됩니다.
+      이번 모델의 AUC 0.67~0.77 구간은 <strong>채용 도메인의 학술적 ceiling 근처</strong>에 위치한다는 뜻입니다.
+      "단일 채용 도구로는 r=0.5가 거의 천장이며, 그 이상은 도구의 조합으로만 도달 가능하다"는 것이 이 분야의 합의입니다.
+    </p>
+    <p>
+      Sackett 등(2021)의 후속 연구는 Schmidt &amp; Hunter의 일부 추정치가 range restriction 보정 가정 때문에 과대평가되었을 가능성을 지적했습니다.
+      보정을 더 보수적으로 잡으면 채용 도구의 실질 validity는 더 낮을 수 있으며, 이는 <em>현장 데이터 기반 모델에 0.9 수준 AUC를 기대하는 것 자체가 비현실적</em>이라는 결론을 더 강화합니다.
+    </p>
+
+    <h3>(다) 사회 결과 예측의 본질적 한계 — "데이터가 많아도 안 되는 영역이 있다"</h3>
+    <div class="callout cite">
+      <strong>Salganik, M. J., et al. (2020). <em>Measuring the predictability of life outcomes with a scientific mass collaboration.</em> PNAS, 117(15), 8398–8403.</strong><br/>
+      Fragile Families Challenge — 미국 사회과학 데이터 위에서 <strong>457개 팀이 다양한 ML 기법으로 6개 인생 결과 예측에 도전</strong>한 결과,
+      최고 모델조차 매우 제한적 예측력에 머물렀음. 단순 벤치마크 대비 큰 폭의 향상이 어려웠다는 점은,
+      <strong>사회·인간 행동 영역의 예측에는 "데이터/모델로 메울 수 없는 본질적 불확실성 구간"이 존재함</strong>을 시사.
+    </div>
+    <p>
+      채용 후 직장 적응·성과 발현은 본인 외 변수(상사·팀 구성·업무 배치·조직 변화 등)에 크게 좌우됩니다.
+      입력으로 사용 가능한 채용 전 정보로 출력(입사 1년 후 평가)을 예측할 때, 두 시점 사이에 인과적으로 끼어드는 변수가 매우 많다는 점이
+      이 도메인 예측의 구조적 한계입니다. <strong>"잘 맞춘 모델"이 도덕적/현실적으로 가능한 영역과 그렇지 않은 영역이 따로 있다</strong>는 학술적 합의가 이 프로젝트의 결과 해석에 그대로 적용되었습니다.
+    </p>
+
+    <h3>(라) 그렇다면 이 모델의 가용성 판정 기준은 무엇이어야 하는가</h3>
+    <ol>
+      <li><strong>도메인 ceiling 대비 위치:</strong> 학술 평균 r=0.3~0.5 구간(AUC 0.66~0.76)에 들어가면, 데이터 한계를 인정한 위에서 "쓸 수 있는 모델"로 평가됩니다.</li>
+      <li><strong>의사결정 보조성:</strong> 채용 자동화 도구가 아니라 <em>평가 가중치·면접 가이드 개선의 참고 데이터</em>로 쓰이면, 점수의 절대값보다 "어떤 변수가 신호인가"의 안정성이 더 중요한 지표가 됩니다.</li>
+      <li><strong>해석 가능성:</strong> Permutation Importance·SHAP으로 변수 기여도를 설명할 수 있다면, 점수가 같더라도 의사결정 자산으로서의 가치는 훨씬 큽니다 (Hosmer &amp; Lemeshow도 "calibration"의 중요성을 강조).</li>
+    </ol>
+
+    <hr/>
+
+    <!-- ===== 4. 왜 H2O AutoML이었는가 ===== -->
+    <h2>4. 왜 H2O AutoML이었는가 — 폐쇄망이 만든 기술 선택</h2>
+    <p>
+      금융사 인사 데이터는 가장 민감한 카테고리에 속합니다. 분석 환경은 외부망이 차단된
+      <strong>폐쇄망 분석PC</strong>였고, 패키지 설치는 사전에 보안 검토를 받은 뒤 내부 저장소를 통해서만 가능했습니다.
+      이 제약은 단순히 "불편하다"는 수준이 아니라, <strong>분석 방법론 선택 자체를 좁히는 변수</strong>였습니다.
+    </p>
+
+    <h3>폐쇄망에서 다중 모델 비교의 현실적 어려움</h3>
+    <ul>
+      <li><strong>scikit-learn 계열만으로는 부족:</strong> KNN/Naive Bayes/GLM은 sklearn으로 쉽게 비교할 수 있지만, 부스팅 계열은 LightGBM·XGBoost·CatBoost 등 별도 패키지가 필요하고, 각 패키지의 컴파일 라이브러리/CUDA 호환성 검토까지 따라옵니다.</li>
+      <li><strong>패키지 추가마다 보안 검토 사이클이 발생:</strong> 후보 알고리즘마다 신청·승인·설치를 반복하면, 분석 본질이 아닌 인프라 협의에 시간을 빼앗기게 됩니다.</li>
+      <li><strong>버전 충돌 리스크:</strong> 폐쇄망은 한 번 설치한 패키지의 다운그레이드가 어렵습니다. 라이브러리 간 충돌이 한 번 터지면 환경을 다시 받는 데 며칠이 소요됩니다.</li>
+    </ul>
+
+    <p>
+      이 상황에서 <strong>"하나의 패키지 안에서 다수의 알고리즘을 같은 인터페이스로 학습/비교/배포할 수 있는"</strong>
+      도구가 필요했고, 그 답이 H2O였습니다. H2O AutoML은 단일 설치만으로 GLM, GBM, Random Forest,
+      Deep Learning, XGBoost(가용 시), Stacked Ensemble을 동일한 H2OFrame 위에서 한 번에 학습하고
+      리더보드를 뽑아 줍니다. 즉 <strong>"패키지 N개 설치 → 데이터 N번 변환 → 평가지표 N번 통일"</strong> 의
+      반복 비용을 거의 제로로 만들 수 있었습니다.
+    </p>
+
+    <div class="callout opinion">
+      <strong>의사결정의 본질</strong><br/>
+      H2O AutoML을 선택한 진짜 이유는 "AutoML이 멋져서"가 아니었습니다.
+      <em>제한된 환경에서 같은 데이터로 가장 많은 가설을 빠르게 검증할 수 있는 방법</em> 이었기 때문입니다.
+      도메인이 까다로울수록 알고리즘 선정보다 <strong>실험 사이클을 짧게 가져갈 수 있는 도구를 고르는 것</strong>이 더 중요한 결정이라는 걸 다시 확인한 프로젝트였습니다.
+    </div>
+
+    <h3>분석 파이프라인 한눈에 보기</h3>
+    <div class="arch">
+      <div class="arch-title">Pipeline · 폐쇄망 환경에서의 H2O AutoML 분석 흐름</div>
+      <svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="H2O AutoML 분석 파이프라인">
+        <defs>
+          <linearGradient id="boxGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1E293B"/>
+            <stop offset="100%" stop-color="#0F172A"/>
+          </linearGradient>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#64748B"/>
+          </marker>
+        </defs>
+        <style>
+          .lbl { font: 600 12px 'Segoe UI', sans-serif; fill: #E2E8F0; }
+          .lbl-sm { font: 500 10.5px 'Segoe UI', sans-serif; fill: #94A3B8; }
+          .lbl-title { font: 700 12px 'Segoe UI', sans-serif; fill: #818CF8; letter-spacing: 0.06em; text-transform: uppercase; }
+          .stage { fill: url(#boxGrad); stroke: rgba(99,102,241,0.4); stroke-width: 1.2; }
+          .stage-g { fill: rgba(52,211,153,0.06); stroke: rgba(52,211,153,0.45); stroke-width: 1.2; }
+          .stage-a { fill: rgba(251,191,36,0.06); stroke: rgba(251,191,36,0.45); stroke-width: 1.2; }
+          .stage-r { fill: rgba(251,113,133,0.06); stroke: rgba(251,113,133,0.45); stroke-width: 1.2; }
+          .arr { stroke: #64748B; stroke-width: 1.4; fill: none; marker-end: url(#arrow); }
+        </style>
+
+        <text x="20" y="40" class="lbl-title">1. Data</text>
+        <rect x="20" y="50" width="160" height="80" rx="8" class="stage"/>
+        <text x="100" y="76" class="lbl" text-anchor="middle">채용 전 지원자 데이터</text>
+        <text x="100" y="94" class="lbl-sm" text-anchor="middle">서류전형 / 직무적성</text>
+        <text x="100" y="110" class="lbl-sm" text-anchor="middle">/ 면접전형 / 입사 후 평가</text>
+        <text x="100" y="124" class="lbl-sm" text-anchor="middle">최근 5년 · 폐쇄망</text>
+
+        <text x="220" y="40" class="lbl-title">2. Labeling</text>
+        <rect x="220" y="50" width="160" height="80" rx="8" class="stage-a"/>
+        <text x="300" y="76" class="lbl" text-anchor="middle" style="fill:#FBBF24;">Best-Fit 점수 산출</text>
+        <text x="300" y="94" class="lbl-sm" text-anchor="middle">성과 + 역량 + 포상/승진</text>
+        <text x="300" y="110" class="lbl-sm" text-anchor="middle">+ 교육/자격증/입문점수</text>
+        <text x="300" y="124" class="lbl-sm" text-anchor="middle">상위 30% = 적합 인재</text>
+
+        <text x="420" y="40" class="lbl-title">3. Split by Job</text>
+        <rect x="420" y="50" width="160" height="80" rx="8" class="stage"/>
+        <text x="500" y="76" class="lbl" text-anchor="middle">직군별 모델 분기</text>
+        <text x="500" y="94" class="lbl-sm" text-anchor="middle">신입(일반직)</text>
+        <text x="500" y="110" class="lbl-sm" text-anchor="middle">신입(사무직)</text>
+        <text x="500" y="124" class="lbl-sm" text-anchor="middle">경력직</text>
+
+        <text x="620" y="40" class="lbl-title">4. H2O AutoML</text>
+        <rect x="620" y="50" width="260" height="80" rx="8" class="stage-g"/>
+        <text x="750" y="74" class="lbl" text-anchor="middle" style="fill:#34D399;">단일 패키지 · 다중 알고리즘 비교</text>
+        <text x="750" y="92" class="lbl-sm" text-anchor="middle">GLM · GBM · RF · KNN · NB</text>
+        <text x="750" y="108" class="lbl-sm" text-anchor="middle">· Stacked Ensemble (Super Learner)</text>
+        <text x="750" y="124" class="lbl-sm" text-anchor="middle">동일 H2OFrame · 동일 평가지표</text>
+
+        <path d="M180,90 L220,90" class="arr"/>
+        <path d="M380,90 L420,90" class="arr"/>
+        <path d="M580,90 L620,90" class="arr"/>
+
+        <text x="20" y="200" class="lbl-title">5. Best Model</text>
+        <rect x="20" y="210" width="200" height="80" rx="8" class="stage"/>
+        <text x="120" y="236" class="lbl" text-anchor="middle">GBM 단일 모델 선정</text>
+        <text x="120" y="254" class="lbl-sm" text-anchor="middle">F1 0.58~0.65 / AUC 0.67~0.77</text>
+        <text x="120" y="270" class="lbl-sm" text-anchor="middle">(직군별 별도 학습)</text>
+
+        <text x="260" y="200" class="lbl-title">6. Feature Insight</text>
+        <rect x="260" y="210" width="240" height="80" rx="8" class="stage-r"/>
+        <text x="380" y="236" class="lbl" text-anchor="middle" style="fill:#FB7185;">Permutation Importance</text>
+        <text x="380" y="254" class="lbl-sm" text-anchor="middle">전형 단계별 핵심 항목 추출</text>
+        <text x="380" y="270" class="lbl-sm" text-anchor="middle">서류 / 직무적성 / 면접 단계별</text>
+
+        <text x="540" y="200" class="lbl-title">7. Individual</text>
+        <rect x="540" y="210" width="240" height="80" rx="8" class="stage"/>
+        <text x="660" y="236" class="lbl" text-anchor="middle">SHAP 기반 개인별 추론</text>
+        <text x="660" y="254" class="lbl-sm" text-anchor="middle">"이 지원자가 왜 적합한가"</text>
+        <text x="660" y="270" class="lbl-sm" text-anchor="middle">레이더 차트 / 중요 항목 시각화</text>
+
+        <path d="M750,130 C750,160 120,160 120,210" class="arr"/>
+        <path d="M220,250 L260,250" class="arr"/>
+        <path d="M500,250 L540,250" class="arr"/>
+
+        <text x="20" y="350" class="lbl-sm">※ 모든 단계는 폐쇄망 분석 PC 내에서 수행 · H2O 단일 패키지 + Python 표준 라이브러리만 사용</text>
+      </svg>
+      <div class="arch-caption">
+        H2O AutoML은 동일한 H2OFrame 위에서 다수 알고리즘을 한 번에 학습·비교하기 때문에,
+        패키지를 추가 설치할 때마다 보안 검토를 거쳐야 하는 폐쇄망에서 실험 사이클을 가장 짧게 가져갈 수 있는 선택이었습니다.
+      </div>
+    </div>
+
+    <hr/>
+
+    <!-- ===== 5. 모델 비교 ===== -->
+    <h2>5. 모델 비교 — KNN/NB/GLM/RF/GBM/Super Learner</h2>
+    <p>
+      중간 보고 시점까지는 직군 무관 단일 모델로 비교를 진행했습니다. H2O AutoML 리더보드 정렬 기준은
+      <strong>F1-Score와 AUC-ROC</strong> 두 가지를 함께 보았는데, 이는 <strong>"실제 적합 인재를 놓치지 않는 능력(Recall)"</strong>과 <strong>"일반 지원자를 적합 인재로 잘못 부르지 않는 능력(FPR 통제)"</strong>을 함께 봐야 한다는
+      도메인 요구 때문이었습니다.
+    </p>
+
+    <h3>왜 GBM이 KNN/Naive Bayes보다 나았는가</h3>
+    <table>
+      <thead>
+        <tr><th>알고리즘</th><th>이번 데이터에서의 한계 / 강점</th><th>판정</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>KNN</td>
+          <td>합격자 위주의 표본은 채용 기준 이상의 지원자들로 구성되어 있어 <strong>이웃 간 특성 차이가 작음</strong>. "비슷한 사람이 많다"는 가정이 모델의 분리력을 떨어뜨림.</td>
+          <td><span class="mark-warn">제한적</span></td>
+        </tr>
+        <tr>
+          <td>Naive Bayes</td>
+          <td>각 특성을 독립으로 가정 → <strong>전형 단계 간/항목 간 상호작용</strong>(예: 학점×직무경험, 자격증×전공)을 반영하지 못함.</td>
+          <td><span class="mark-warn">제한적</span></td>
+        </tr>
+        <tr>
+          <td>GLM</td>
+          <td>해석은 쉬우나 비선형 관계 캡처가 약함. 가정 위반 시 해석이 흔들림.</td>
+          <td><span class="mark-ok">참고용</span></td>
+        </tr>
+        <tr>
+          <td>Random Forest</td>
+          <td>안정적이고 과적합에 강하지만, 트리 수/깊이 등 하이퍼파라미터에 따른 흔들림이 있고 트리 구조의 직관적 설명은 어려움.</td>
+          <td><span class="mark-ok">우수</span></td>
+        </tr>
+        <tr>
+          <td><strong>GBM</strong></td>
+          <td>약한 트리들의 순차 부스팅으로 오차를 줄여나감. <strong>특성 중요도 내장 + 특성 선택 효과</strong>로 신호가 약한 변수에 자동으로 낮은 가중을 부여. <strong>특성 간 상호작용 반영</strong>이 자연스러움.</td>
+          <td><span class="mark-good">최우수</span></td>
+        </tr>
+        <tr>
+          <td>Super Learner (Stacked Ensemble)</td>
+          <td>여러 모델의 예측을 가중 결합. 점수는 GBM과 유사했으나 <strong>해석 비용이 큼</strong> — 뒤에 이어질 Permutation Importance 작업과의 정합성이 떨어졌음.</td>
+          <td><span class="mark-ok">대안</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="legend">F1·AUC-ROC 기준의 정량 비교에 더해, "분석 결과를 인사팀이 채용 기준 개선에 쓸 수 있어야 한다"는 사용처를 같은 무게로 보았습니다.</p>
+
+    <h3>중간보고 → 최종보고 사이의 모델링 변경 두 가지</h3>
+    <ol>
+      <li>
+        <strong>모델 결합(Super Learner) → GBM 단일 모델로 회귀.</strong>
+        성능이 거의 동등한데 해석 비용이 더 작은 쪽이 유리했습니다.
+        뒤에 <em>"채용 단계별 어떤 항목이 적합도 판정에 기여했는가"</em>를 순열 중요도로 풀어내야 했기 때문에,
+        단일 모델의 <strong>예측-설명 일치성</strong>이 더 중요했습니다.
+      </li>
+      <li>
+        <strong>전체 단일 모델 → 직군별 별도 모델.</strong>
+        신입 일반직·신입 사무직·경력직은 채용 요건 자체가 다르고, 같은 변수가 다른 의미를 가졌습니다.
+        예) "직무경험"은 신입(사무직)에서는 길수록 Fit↑이지만, 신입(일반직)에서는 1년 이내 단기 경험에서 Fit이 가장 높았음.
+      </li>
+    </ol>
+
+    <h3>최종 성능 (직군별 GBM 단일 모델)</h3>
+    <table>
+      <thead>
+        <tr><th>직군</th><th>AUC-ROC ↑</th><th>F1-Score ↑</th><th>해석</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>신입(일반직)</td><td>0.77</td><td>0.65</td><td>Hosmer-Lemeshow 기준 acceptable / 채용 도메인 ceiling 근처</td></tr>
+        <tr><td>신입(사무직)</td><td>0.67</td><td>0.58</td><td>표본 수 적음 — 데이터 누적 진행 시 개선 여지</td></tr>
+        <tr><td>경력직</td><td>0.68</td><td>—</td><td>희망연봉인상률·재직기간 등 외부요인 변동성 영향</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout warn">
+      <strong>왜 AUC-ROC를 F1보다 먼저 보았는가</strong><br/>
+      Best-Fit(상위 30%) 판정은 <em>"놓치지 말아야 한다"</em>는 도메인 요구가 강했습니다. AUC-ROC는
+      X축 FPR / Y축 TPR 곡선의 면적으로, <strong>일반 지원자를 적합 인재로 잘못 분류하는 비율을 낮추면서 실제 적합 인재를 잘 잡아내는 능력</strong>을 함께 봅니다.
+      F1은 Precision과 Recall의 조화평균이라 두 지표가 모두 높아야 1에 가까워집니다.
+      "성공적인 채용 = 진짜 적합 인재를 거르지 않는 것"이라는 관점에서 두 지표를 함께 본 이유입니다.
+      또한 표본이 작은 직군에서는 임계값 변동에 민감한 F1보다 AUC-ROC가 더 안정적이라 우선 지표로 두었습니다.
+    </div>
+
+    <hr/>
+
+    <!-- ===== 6. Permutation Importance ===== -->
+    <h2>6. Permutation Importance — 모델보다 더 가치 있던 결과물</h2>
+    <p>
+      앞서 언급한 데이터 한계 때문에 이 프로젝트의 가치는 <strong>모델 점수의 절대값</strong>이 아니라
+      <strong>"채용 전형의 어느 단계, 어느 항목이 입사 후 적합도와 연결되는가"</strong>라는
+      구조적 인사이트에 있었습니다. 점수가 낮아 보여도, <em>안정적으로 떠오르는 변수의 묶음</em>은 충분히 인사 정책 자산이 됩니다.
+    </p>
+
+    <h3>Permutation Importance를 쓴 이유</h3>
+    <ul>
+      <li><strong>모델 내부 중요도(Gini/Gain)는 변수의 척도·카디널리티 편향이 있음.</strong> "범주가 많은 변수가 중요해 보이는" 가짜 신호를 거를 필요가 있었습니다.</li>
+      <li><strong>특정 feature를 무작위로 섞어 성능이 얼마나 떨어지는지로 중요도를 판정.</strong> 직관적이고 도메인에 설명하기 쉬웠습니다. <em>"이 변수 값을 망가뜨려도 모델 성능이 비슷하게 유지된다면, 사실 그 변수는 채용 판정에 크게 기여하지 않는다는 뜻입니다"</em> — 이 한 문장으로 인사팀과 합의가 빨랐습니다.</li>
+      <li><strong>전형 단계(서류/직무적성/면접)별로 묶어 비교하기에도 적합.</strong> 같은 단계 안에서 어떤 항목이 진짜 신호인지를 가려낼 수 있었습니다.</li>
+      <li><strong>표본이 작은 데이터에서도 비교적 안정적</strong>으로 동작합니다. 여러 셔플 반복으로 분산까지 보고할 수 있어, 한계 데이터 위에서도 결과의 강건성을 함께 제시하기 좋았습니다.</li>
+    </ul>
+
+    <h3>직군별 핵심 항목 — 인사팀이 다음 채용 사이클에 쓸 수 있게</h3>
+
+    <h3 style="margin-top:24px;">신입(일반직) — 직무적성검사가 가장 중요</h3>
+    <p>
+      서류전형보다 <strong>직무적성검사</strong> 단계가 적합도 판별에 가장 큰 기여를 했습니다.
+      서류 단계에서는 <strong>대학 학점·금융 관련 자격증·1년 이내의 직무경험</strong>이 의미 있는 신호였고,
+      대학 졸업이 지체된 합격자는 적합 비율이 낮았습니다.
+      직무적성 단계에서는 인사팀이 직무별로 구성한 <strong>중요역량점수·고객지향성 역량점수</strong>가 핵심이었으며,
+      면접전형은 합격/불합격을 가르는 컷오프로는 의미 있었지만 상위 30% 판별에는 적합하지 않은 점수 분포를 보였습니다.
+    </p>
+    <p class="legend">한 줄 요약 — <strong>학업 성과를 기반으로 금융에 흥미를 갖고, 이를 실무에서 발휘할 수 있는 인재</strong>.</p>
+
+    <h3 style="margin-top:24px;">신입(사무직) — 직무경험 길이 + 문서활용 자격증</h3>
+    <p>
+      신입 사무직은 일반직과 채용요건 자체가 달랐습니다(고졸 이상 채용·정형화된 업무 비중↑).
+      Permutation Importance 결과 <strong>사무지원 직무경험 길이</strong>와 <strong>문서활용능력 자격증 보유 여부/개수</strong>가
+      가장 강한 신호였고, 직무적성에서는 <strong>언어비평능력·창의성과 혁신성·전문성 개발 및 학습 역량</strong>이 일반직보다 더 또렷이 떴습니다.
+      흥미로웠던 점은 직무경험이 <strong>없는</strong> 합격자 그룹에서는 <em>"어릴수록(20대 중반 이하)" Fit↑</em>이 나타났다는 것이었습니다.
+    </p>
+    <p class="legend">한 줄 요약 — <strong>신속한 사회 진출을 위해 문서 활용능력과 직무 관련 경험을 갖춘 준비된 인재</strong>.</p>
+
+    <h3 style="margin-top:24px;">경력직 — 서류전형이 가장 중요</h3>
+    <p>
+      경력직만 <strong>서류전형</strong> 단계의 중요도가 가장 높았습니다.
+      <strong>평균재직기간이 길수록 Fit↑ / 이직이 빈번할수록 Fit↓</strong>이 가장 또렷한 신호였고,
+      <strong>희망연봉인상률</strong>이 높은 합격자에서 적합 비율이 높았는데,
+      이는 단순히 인상률이 높다고 적합한 것이 아니라
+      <em>한 회사에서 오래 근무하다 시장 평균 인상률을 쫓아 이직을 결심한 인력의 비율이 높았기 때문</em>으로 해석되었습니다.
+      디지털 인력 채용 비중 증가, 코로나 이후 디지털 직군 연봉 상승 트렌드와도 맞물리는 결과였고요.
+    </p>
+    <p class="legend">한 줄 요약 — <strong>조직에 대한 충성과 높은 전문성을 갖추고 안정적이면서도 성과창출 능력이 뛰어난 실무 전문가</strong>.</p>
+
+    <hr/>
+
+    <!-- ===== 7. 개인 추론 ===== -->
+    <h2>7. 개인별 해석 — SHAP으로 "왜 이 지원자가 적합한가"</h2>
+    <p>
+      Permutation Importance가 <strong>전형 단계 차원의 인사이트</strong>였다면,
+      SHAP(SHapley Additive exPlanations)은 <strong>개인 단위의 설명</strong>이었습니다.
+      가명화된 사번 기준으로, "이 지원자가 왜 적합 인재로 예측되었는가"를
+      각 feature 기여도로 쪼개어 보여주었습니다.
+    </p>
+    <p>
+      예: 영업관리 직무로 입사한 한 임직원은
+      <strong>학점 상위 10% / TOEIC·OPIC 외국어 상위권 / 15개월 금융권 단기경력 / 언어비평능력 상위권 / 타인배려·원만한 협조 점수↑</strong>
+      가 결합되어 적합도 예측 확률 64.4%를 받았고, 실제로 입사 후 우수 성과를 내는 임직원이었습니다.
+      회사 핵심가치역량 점수를 SHAP 상위 기여 변수로 정직하게 잡아낸 사례였습니다.
+    </p>
+
+    <div class="callout opinion">
+      <strong>왜 SHAP과 Permutation Importance를 같이 썼는가</strong><br/>
+      두 기법은 보는 층위가 다릅니다. <em>"채용 기준을 어떻게 바꿀까"</em> 라는 정책 질문에는 Permutation Importance가,
+      <em>"이 사람이 왜 우리에게 적합한가"</em> 라는 추천 질문에는 SHAP이 답을 합니다.
+      인사팀이 두 가지를 모두 필요로 했기 때문에, 같은 GBM 모델 위에서 두 해석을 함께 뽑은 것이 합리적이었습니다.
+    </div>
+
+    <hr/>
+
+    <!-- ===== 8. 잘 마무리하기 ===== -->
+    <h2>8. 한계 위에서 분석을 잘 마무리한다는 것</h2>
+    <p>
+      이 프로젝트가 산출한 모델이 의료 영상 분류기처럼 0.95 AUC를 찍지 못한 것은 사실입니다.
+      그러나 분석을 잘 마무리한다는 것은 <strong>"점수를 부풀리는 것"이 아니라 "점수의 의미를 정확히 전달하고, 그 안에서 의사결정에 쓸 수 있는 결과를 남기는 것"</strong>이라는 입장으로 보고를 정리했습니다.
+    </p>
+
+    <h3>최종보고에 담은 네 가지 정직함</h3>
+    <ol>
+      <li>
+        <strong>데이터 한계의 명시.</strong>
+        시스템 마이그레이션 부재(5년 누적), 코로나 신입 공채 1년 공백, 경력직 채용 사이클의 비정기성, 면접 점수의 평가자 분산 — 이 네 가지를 보고서 본문 앞에 두어 결과 해석의 전제로 깔았습니다.
+      </li>
+      <li>
+        <strong>도메인 ceiling과의 비교.</strong>
+        Schmidt &amp; Hunter(1998) 메타분석에서 채용 도구 단일 validity가 r=0.5 부근이 천장이라는 사실, Hosmer &amp; Lemeshow의 AUC 해석 기준에서 0.7 이상이 "acceptable"이라는 사실을 인용해, 우리 모델 점수가 "낮은 점수가 아니라 이 도메인에서 일반적으로 도달 가능한 구간"임을 학술적 근거로 설명했습니다.
+      </li>
+      <li>
+        <strong>모델의 사용처 재정의.</strong>
+        합격/불합격 자동화 도구가 아니라, <em>채용 평가 가중치 조정·면접 가이드 보강의 참고 자산</em>으로 포지셔닝했습니다. 점수의 절대값보다 <strong>"신호로 안정적으로 떠오르는 변수가 무엇인가"</strong>가 의사결정에 더 가치 있다는 점을 분석 결과로 입증했습니다.
+      </li>
+      <li>
+        <strong>다음 사이클로의 연결.</strong>
+        데이터 누적이 진행되면 동일 파이프라인 위에서 모델이 자연스럽게 강해지도록, H2O AutoML 기반 학습/평가 코드와 Permutation Importance 산출 절차를 표준화해 인계했습니다. <em>"이번 분석에서 본 것은 시작점이며, 다음 채용 사이클의 데이터가 들어왔을 때 비교 기준선이 된다"</em>는 점이 보고의 마무리였습니다.
+      </li>
+    </ol>
+
+    <p>
+      그 결과 인사팀은 <strong>직군별 채용 단계의 평가 가중치 조정 방향</strong>, <strong>변별력이 약한 면접 항목의 보강 포인트</strong>, <strong>1년 후 평가까지를 염두에 둔 신입과정 설계 힌트</strong>를 모델 점수와 분리된 형태로 손에 쥐게 되었습니다.
+      "0.77짜리 모델"이라는 단일 숫자보다, <strong>"우리 채용 데이터로 무엇을 알 수 있고 무엇은 더 쌓아야 알 수 있는지"가 명확해진 것</strong>이 이 프로젝트의 진짜 산출물이었습니다.
+    </p>
+
+    <hr/>
+
+    <!-- ===== 9. 회고 ===== -->
+    <h2>9. 회고 </h2>
+    <ul>
+      <li>
+        <strong>제약이 분석 도구의 선택을 결정합니다.</strong>
+        H2O AutoML은 "AutoML 트렌드라서"가 아니라 <em>"패키지 한 개로 다중 알고리즘을 통일된 인터페이스에서 비교할 수 있어서"</em>
+        택한 도구였습니다. 폐쇄망에서는 패키지 추가 한 번이 보안 검토 한 사이클이고, 그 비용이 알고리즘 선정 비용보다 큽니다.
+      </li>
+      <li>
+        <strong>점수의 절대값이 아닌 "도메인 ceiling 위에서의 위치"로 모델을 설명하세요.</strong>
+        AUC 0.77은 의료 진단에서는 부족하지만 채용 도메인에서는 학술 평균선 위입니다.
+        같은 점수도 어떤 비교 기준 위에 두느냐에 따라 의사결정의 의미가 달라집니다.
+      </li>
+      <li>
+        <strong>모델 점수보다 "다음에 누가 무엇을 어떻게 할 수 있게 됐는가"가 분석의 가치를 결정합니다.</strong>
+        F1 0.65는 그 자체로는 자랑할 숫자가 아닙니다. 하지만 인사팀이 직군별로 채용 기준을 어떻게 손질해야 할지를
+        Permutation Importance 표 한 장으로 의사결정할 수 있게 됐다는 것이 이 프로젝트의 진짜 결과였습니다.
+      </li>
+      <li>
+        <strong>Stacked Ensemble의 점수가 비슷하다면 단일 모델이 낫습니다.</strong>
+        해석이 필요한 도메인에서 <em>예측 정확도와 설명 일관성은 서로 다른 비용 함수</em>입니다.
+        Super Learner로 0.5%p 더 짜내기보다 GBM 단일 모델로 SHAP·Permutation Importance를 또렷이 뽑는 쪽이 운영적으로 옳았습니다.
+      </li>
+      <li>
+        <strong>도메인 합의가 라벨링의 품질을 결정합니다.</strong>
+        Best-Fit 평가 기간을 3년 → 1년으로 바꾼 의사결정이 모델 성능을 가장 크게 끌어올린 변경이었습니다.
+        피처 엔지니어링보다 라벨 정의를 다듬는 회의 한 번이 모델에 더 큰 영향을 줄 수 있다는 점은 매번 다시 확인하게 됩니다.
+      </li>
+    </ul>
+
+    <p>
+      이 글이 <strong>폐쇄망/분석 환경 제약</strong> 아래에서 머신러닝을 적용해야 하는 분들이나,
+      <strong>HR Analytics</strong>처럼 라벨 정의가 절반 이상의 일이 되는 도메인에서 PL 역할을 맡으신 분들께
+      한 조각의 참고가 되기를 바랍니다.
+    </p>
+
+    <!-- ===== 참고문헌 ===== -->
+    <div class="refs">
+      <h4>참고문헌 · References</h4>
+      <ol>
+        <li>Hosmer, D. W., Lemeshow, S., &amp; Sturdivant, R. X. (2013). <em>Applied Logistic Regression</em> (3rd ed.). Wiley. — AUC 해석 기준 (0.7 이상 acceptable / 0.8 이상 excellent).</li>
+        <li>Schmidt, F. L., &amp; Hunter, J. E. (1998). The Validity and Utility of Selection Methods in Personnel Psychology: Practical and Theoretical Implications of 85 Years of Research Findings. <em>Psychological Bulletin, 124</em>(2), 262–274. — 채용 도구 메타분석. <a href="https://psycnet.apa.org/record/1998-10661-006">psycnet.apa.org</a></li>
+        <li>Salganik, M. J., et al. (2020). Measuring the predictability of life outcomes with a scientific mass collaboration. <em>PNAS, 117</em>(15), 8398–8403. — 사회 결과 예측의 본질적 한계.</li>
+        <li>Sackett, P. R., Zhang, C., Berry, C. M., &amp; Lievens, F. (2021). Revisiting meta-analytic estimates of validity in personnel selection. <em>Journal of Applied Psychology</em>. — Schmidt &amp; Hunter 추정치의 보정 검토.</li>
+        <li>H2O.ai. (2024). <em>H2O AutoML Documentation</em>. <a href="https://docs.h2o.ai/h2o/latest-stable/h2o-docs/automl.html">docs.h2o.ai</a></li>
+      </ol>
+    </div>
+
+    <div class="footer-note">
+      ※ 본문의 라벨 정의·산출 절차·직군별 특성 서술은 사내 분석보고 자료의 구성을 공개 가능한 수준으로 일반화·재구성한 것이며,
+      특정 기업·임직원·지원자를 식별할 수 있는 정보는 포함되어 있지 않습니다. 인용된 수치는 도메인 일반화된 범위로 표시했습니다.
+    </div>
+  </div>
+</body>
+</html>

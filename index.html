@@ -77,6 +77,7 @@
         <a href="#skills"      class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Skills</a>
         <a href="#experience"  class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Experience</a>
         <a href="#projects"    class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Projects</a>
+        <a href="#opensource"  class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">OSS</a>
         <a href="#writings"    class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Writings</a>
         <a href="#contact"     class="nav-link text-slate-300 hover:text-white transition-colors text-sm font-medium">Contact</a>
         <a href="#contact" class="px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-blue-500 via-violet-500 to-emerald-500 text-white hover:opacity-90 transition-opacity">
@@ -99,6 +100,7 @@
       <a href="#skills"      class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Skills</a>
       <a href="#experience"  class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Experience</a>
       <a href="#projects"    class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Projects</a>
+      <a href="#opensource"  class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">OSS</a>
       <a href="#writings"    class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Writings</a>
       <a href="#contact"     class="text-slate-300 hover:text-white transition-colors font-medium" onclick="closeMobileMenu()">Contact</a>
     </div>
@@ -1068,6 +1070,148 @@
     </div>
   </section>
 
+  <!-- ===== OPEN SOURCE / GITHUB ===== -->
+  <section id="opensource" class="py-24 px-6 section-hidden">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-black gradient-text mb-3">Open Source · GitHub</h2>
+        <p class="text-slate-500">실무에서 정제한 엔지니어링 자산과 대학원에서 확장한 ML/AI 학습 결과물</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+
+        <!-- OSS Card 1: Airflow ETL Template (실무 자산) -->
+        <a href="https://github.com/wooyeon83/airflow-etl-template" target="_blank" rel="noopener noreferrer"
+           class="block glass rounded-2xl overflow-hidden card-hover">
+          <div class="h-2 bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500"></div>
+          <div class="p-6 md:p-8">
+
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-sky-500/20 flex items-center justify-center text-2xl">🛠️</div>
+              <div class="flex gap-1.5">
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30">Production-Grade</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-700/60 text-slate-300 border border-slate-600">GitHub</span>
+              </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-1 leading-snug">
+              airflow-etl-template
+            </h3>
+            <p class="text-xs text-slate-500 mb-4">AWS MWAA 기반 ETL DAG 보일러플레이트 · Airflow 2.10.4 / Python 3.11</p>
+
+            <p class="text-sm text-slate-300 leading-relaxed mb-5">
+              실무에서 반복적으로 쓰이는 ETL 패턴을 그대로 복제 후 수정만 하면 동작하도록 정리한 템플릿입니다.
+              <strong class="text-white">SFTP→S3 적재 (Extract)</strong>, <strong class="text-white">S3 센서 → Glue Job 실행 (Load)</strong>,
+              <strong class="text-white">Athena 검증 → RDS 프로시저 호출 (Transform)</strong> 세 가지 표준 DAG를 제공합니다.
+            </p>
+
+            <div class="space-y-2 mb-5 text-xs">
+              <div class="flex gap-2">
+                <span class="text-sky-400 font-bold shrink-0 w-20">DAG 컨벤션</span>
+                <span class="text-slate-400 leading-relaxed"><code class="text-emerald-300 bg-slate-900/60 px-1 rounded">AF{PERIOD}{DOMAIN}_{SEQ}_{SUBJECT}_DAG</code> 명명 규칙으로 운영 식별성 확보</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-sky-400 font-bold shrink-0 w-20">환경 분리</span>
+                <span class="text-slate-400 leading-relaxed">Airflow Variables · AWS Secrets Manager 기반으로 dev/prd 환경값 분리, 하드코딩 제거</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-sky-400 font-bold shrink-0 w-20">CI/CD</span>
+                <span class="text-slate-400 leading-relaxed">GitLab CI로 <code class="text-emerald-300 bg-slate-900/60 px-1 rounded">dev</code>/<code class="text-emerald-300 bg-slate-900/60 px-1 rounded">prd</code> 브랜치 → IAM Role Assume 후 S3 sync 자동화</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-sky-400 font-bold shrink-0 w-20">공통 자산</span>
+                <span class="text-slate-400 leading-relaxed">RDS·SFTP·Athena Hook, Custom Operator, EMR Serverless Util까지 패키지화</span>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">AWS MWAA</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">Airflow 2.10</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">Glue</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-amber-500/20 text-amber-300">Athena</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-pink-500/20 text-pink-300">GitLab CI</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-sky-500/20 text-sky-300">Secrets Manager</span>
+            </div>
+
+            <div class="inline-flex items-center gap-1 text-sm font-semibold text-sky-300">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+              </svg>
+              GitHub에서 보기 <span aria-hidden="true">→</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- OSS Card 2: 국민대 AI 빅데이터 대학원 프로젝트 모음 -->
+        <a href="https://github.com/wooyeon83/kmu_aibd_project" target="_blank" rel="noopener noreferrer"
+           class="block glass rounded-2xl overflow-hidden card-hover">
+          <div class="h-2 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500"></div>
+          <div class="p-6 md:p-8">
+
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center text-2xl">🎓</div>
+              <div class="flex gap-1.5">
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-violet-500/20 text-violet-300 border border-violet-500/30">Graduate Research</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-700/60 text-slate-300 border border-slate-600">GitHub</span>
+              </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-1 leading-snug">
+              kmu_aibd_project
+            </h3>
+            <p class="text-xs text-slate-500 mb-4">국민대 AI 빅데이터학과 대학원 4학기 통합 프로젝트 아카이브</p>
+
+            <p class="text-sm text-slate-300 leading-relaxed mb-5">
+              데이터 엔지니어링 18년 실무 위에 <strong class="text-white">전통 ML · 딥러닝 · NLP · 추천시스템 · LLM 에이전트</strong>까지
+              학습 영역을 확장한 4학기 결과물 모음입니다. 각 학기별로 도메인 문제 정의 → 데이터 수집·전처리 → 모델링 →
+              결과 해석·시각화까지의 풀사이클을 직접 수행했습니다.
+            </p>
+
+            <div class="space-y-2 mb-5 text-xs">
+              <div class="flex gap-2">
+                <span class="text-violet-400 font-bold shrink-0 w-12">1학기</span>
+                <span class="text-slate-400 leading-relaxed">초등학생 성장발달 공공데이터 EDA + Streamlit 대시보드 배포</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-fuchsia-400 font-bold shrink-0 w-12">2학기</span>
+                <span class="text-slate-400 leading-relaxed">정기예금 가입 예측(H2O AutoML) · 통계분석 기반 가설 검증</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-pink-400 font-bold shrink-0 w-12">3학기</span>
+                <span class="text-slate-400 leading-relaxed">A/B 테스트 · 도서 리뷰 감성분석(NLP) · CNN 피부질환 분류 · VOC 데이터 가명처리 연구</span>
+              </div>
+              <div class="flex gap-2">
+                <span class="text-rose-400 font-bold shrink-0 w-12">4학기</span>
+                <span class="text-slate-400 leading-relaxed">회의 비서 LLM 에이전트 · LightGCN/NCF 추천시스템 · AWS SageMaker 클라우드 ML 파이프라인</span>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">H2O AutoML</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">PyTorch</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">SageMaker</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-amber-500/20 text-amber-300">LightGCN</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-pink-500/20 text-pink-300">Streamlit</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-fuchsia-500/20 text-fuchsia-300">LLM Agent</span>
+            </div>
+
+            <div class="inline-flex items-center gap-1 text-sm font-semibold text-violet-300">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+              </svg>
+              GitHub에서 보기 <span aria-hidden="true">→</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+
+      <p class="text-center text-xs text-slate-600 mt-10 max-w-2xl mx-auto leading-relaxed">
+        ※ 각 저장소의 README에는 디렉토리 구조 · 환경 설정 · 재현 절차가 정리되어 있어, 클론 후 바로 동작 시켜볼 수 있도록 구성했습니다.
+      </p>
+    </div>
+  </section>
+
   <!-- ===== WRITINGS ===== -->
   <section id="writings" class="py-24 px-6 section-hidden" style="background: rgba(30,41,59,0.3)">
     <div class="max-w-6xl mx-auto">
@@ -1077,6 +1221,40 @@
       </div>
 
       <div class="max-w-2xl mx-auto space-y-6">
+        <!-- Blog 3: H2O AutoML 기반 채용 데이터 분석 -->
+        <a href="blog-h2o-automl-kyobo.html" class="block glass rounded-2xl overflow-hidden card-hover">
+          <div class="h-2 bg-gradient-to-r from-emerald-500 via-blue-500 to-violet-500"></div>
+          <div class="p-6 md:p-8">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-2xl">🤖</div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">AI/ML · HR Analytics</span>
+            </div>
+
+            <h3 class="text-xl md:text-2xl font-bold text-white mb-2 leading-snug">
+              채용 데이터 분석 — 폐쇄망에서 H2O AutoML로 풀어낸 조직 적합도 예측, 그리고 사회과학 예측 모델의 적정 성능 기준
+            </h3>
+            <p class="text-xs text-slate-500 mb-4">2026-05-02 · AI/ML · 분석 PM 관점 회고</p>
+
+            <p class="text-sm text-slate-300 leading-relaxed mb-5">
+              외부 패키지 자유 설치가 불가능한 금융권 폐쇄망 환경에서 H2O AutoML로 다수 알고리즘을 비교해 GBM 단일 모델을 채택했습니다.
+              데이터 한계(시스템 마이그레이션 부재·코로나 채용 공백·면접 주관성)를 정직하게 명시하고,
+              Schmidt &amp; Hunter 메타분석·Hosmer &amp; Lemeshow 기준 위에서 모델의 가용성을 설명한 회고입니다.
+            </p>
+
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300">H2O AutoML</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">GBM</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-violet-500/20 text-violet-300">Permutation Importance</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-amber-500/20 text-amber-300">Selection Validity</span>
+              <span class="px-2 py-0.5 rounded text-xs bg-pink-500/20 text-pink-300">SHAP</span>
+            </div>
+
+            <div class="inline-flex items-center gap-1 text-sm font-semibold text-indigo-300">
+              글 읽기 <span aria-hidden="true">→</span>
+            </div>
+          </div>
+        </a>
+
         <!-- Blog 2: Databricks vs SageMaker Unified Studio -->
         <a href="blog-databricks-vs-smus.html" class="block glass rounded-2xl overflow-hidden card-hover">
           <div class="h-2 bg-gradient-to-r from-rose-500 via-indigo-500 to-emerald-500"></div>
